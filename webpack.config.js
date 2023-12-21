@@ -10,7 +10,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'Fighter Foundation',
+      title: 'BattleShip',
       filename: 'index.html',
       template: 'src/template.html'
     })

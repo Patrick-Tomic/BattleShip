@@ -6,13 +6,15 @@
         "strict": true,
         "strictNullChecks": true,
         "noImplicitAny": true,
-        "target": "ES2015"
+        "target": "ES2015",
+        "esModuleInterop": true
     },
     "include": [
         "src",
         "./eslint.js",
         "./webpack.config.js",
-        "./jest.config.ts"
+        "jest.config.js"
 
     ],
+    "exclude": ["node_modules"]
 }
