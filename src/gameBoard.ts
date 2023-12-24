@@ -1,17 +1,20 @@
 export default class GameBoard {
-    board: any[][] = []
-    missedShot : boolean[][] = []
+    board: any[] = []
+    missedShot : any[] = []
     constructor() {
         this.initialize()
     }
     initialize() {
-        for(let i = 0; i < 10; i++) {
-            this.board[i] = []
-            this.missedShot[i] = []
+        for (let i = 0; i <=10; i++) {
+            let arr = []
+            let missed = []
             for(let j = 0; j < 10; j++) {
-                this.board[i][j] = null
-                this.missedShot[i][j] = false
+                let element: any[] = []
+                arr.push(element)
+                missed.push(null)
             }
+            this.board.push(arr)
+            this.missedShot.push(missed)
         }
     }
 }
