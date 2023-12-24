@@ -6,5 +6,5 @@ Dingy.hit()
 
 
 export const board = new GameBoard
-board.createBoat(2, 9, 4, "horizontal")
 console.log(board.board)
+console.log(board.ships)

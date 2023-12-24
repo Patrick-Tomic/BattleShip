@@ -26,12 +26,12 @@ export default class GameBoard {
         this.board = board
         this.missedShot = missed
     }
-    createBoat(x: number, y: number, length: 2 | 3 | 4 | 5, direction: 'vertical' | 'horizontal' ): any {
+    createBoat(x: number, y: number, length: number, direction: 'vertical' | 'horizontal' ): any {
         this.ships.push(new Ship(length))
         this.board[x][y] = true
         let count = 1
         let precaution = 1
-        if ( direction === 'vertical'){
+        if ( direction === 'horizontal'){
             if (y === 9) {
                 while(count != length) {
                     this.board[x][y-count] = true
@@ -54,7 +54,7 @@ export default class GameBoard {
                     count++
                 }
             }
-        } else if (direction === 'horizontal') {
+        } else if (direction === 'vertical') {
             if (x === 9) {
                 while(count != length) {
                     this.board[x-count][y] = true
