@@ -2,10 +2,12 @@ export default class Ship{
     length: number
     Sunk: boolean
     hits: number
-    constructor(length: number) {
+    name: string
+    constructor(length: number, name:string) {
         this.length = length
         this.Sunk = false
         this.hits = 0
+        this.name = name
     }
     hit() {
         return this.hits++

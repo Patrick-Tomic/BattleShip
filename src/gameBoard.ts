@@ -1,4 +1,4 @@
-import { dir } from "console"
+import { dir, error } from "console"
 import Ship from "./ship"
 export default class GameBoard {
     board: any[]
@@ -27,11 +27,54 @@ export default class GameBoard {
         this.missedShot = missed
     }
     createBoat(x: number, y: number, length: number, direction: 'vertical' | 'horizontal' ): any {
-        this.ships.push(new Ship(length))
+        if (this.board[x][y] === true) {
+            throw Error
+        }
+        switch(length) {
+            case 2: 
+                 this.ships.push(new Ship(length, 'Destroyer'))
+                 break
+            case 3:
+                if(this.ships.length) {
+               for(let i = 0; i <= this.ships.length; i++) {
+                    const ship = this.ships[i]
+                    if( ship.name ==='Submarine') {
+                        this.ships.push(new Ship(length, 'Cruiser'))
+                        break
+                    }
+                }
+                break
+            }
+                 this.ships.push(new Ship(length, 'Submarine'))
+                 break
+            case 4:
+                 this.ships.push(new Ship(length, 'Battleship'))
+                 break
+            case 5: 
+                 this.ships.push(new Ship(length, 'Carrier'))
+                break
+            default:
+                console.log('length value not allowed')
+                return
+
+        }
         this.board[x][y] = true
         let count = 1
         let precaution = 1
         if ( direction === 'horizontal'){
+            while (count != length) {
+                if (y === 9) {
+                    if( this.board[x][y-count-1] === true){
+                        throw Error
+                    }
+                } else {
+                if ( this.board[x][y+ count+1]  === true) {
+                    throw Error
+                }
+            }
+                count++
+            } 
+            count = 0
             if (y === 9) {
                 while(count != length) {
                     this.board[x][y-count] = true
@@ -55,6 +98,19 @@ export default class GameBoard {
                 }
             }
         } else if (direction === 'vertical') {
+             while (count != length) {
+                if ( x === 9) {
+                    if ( this.board[x -count-1][y] === true) {
+                        throw Error
+                    }
+                } else {
+                if ( this.board[x+ count+1][y] ===true) {
+                    throw Error
+                }
+            }
+                count++
+            } 
+            count = 0
             if (x === 9) {
                 while(count != length) {
                     this.board[x-count][y] = true
@@ -79,4 +135,10 @@ export default class GameBoard {
         }
     }
 }
+    recieveAttack(x: number, y: number) {
+        if(this.board[x][y] === true) {
+            console.log('hit')
+
+        }
+    }
 }
