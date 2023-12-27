@@ -1,12 +1,10 @@
 import {describe, expect, test} from '@jest/globals'
 import { board } from '.'
 import Ship from './ship'
-import { verify } from 'crypto'
-import exp from 'constants';
 describe('plant boat on board', () => {
     test('', () => {
         board.createBoat(2, 3, 2, 'vertical') 
-        expect(board.board[3][3] && board.board[2][3]).toBe(true)
+        expect(board.board[3][3] && board.board[2][3]).toBe('Destroyer')
     })
 })
  
@@ -15,7 +13,8 @@ describe('plant boat on board', () => {
         expect(board.ships[1]).toEqual({
             "Sunk": false,
             "hits": 0,
-            "length": 4
+            "length": 4,
+            "name": 'Battleship'
         })
         })
                 
@@ -24,5 +23,10 @@ describe('plant boat on board', () => {
         board.createBoat(0,3,4,'horizontal')
         expect(Error) 
     })
+    test('Recieve Hit function', ()=> {
+        board.createBoat(1 ,1, 2, 'vertical')
+        board.recieveAttack(5,5)
+        expect(board.board[5][5]).toBe('X')
+    }) 
 
    

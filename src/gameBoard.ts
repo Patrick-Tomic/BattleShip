@@ -8,20 +8,21 @@ export default class GameBoard {
         this.board = []
         this.initialize()
         this.ships = []
+
     }
     initialize() {
         const board = this.board
         const missed = this.missedShot
         for (let i = 0; i <10; i++) {
             let arr: any[] = []
-            let missed = []
+            let miss = []
             for(let j = 0; j < 10; j++) {
                 let element: any[] = []
                 arr.push(element)
-                missed.push(null)
+                miss.push(null)
             }
             board.push(arr)
-            missed.push(missed)
+            missed.push(miss)
         }
         this.board = board
         this.missedShot = missed
@@ -36,7 +37,7 @@ export default class GameBoard {
                  break
             case 3:
                 if(this.ships.length) {
-               for(let i = 0; i <= this.ships.length; i++) {
+               for(let i = 0; i < this.ships.length; i++) {
                     const ship = this.ships[i]
                     if( ship.name ==='Submarine') {
                         this.ships.push(new Ship(length, 'Cruiser'))
@@ -58,7 +59,7 @@ export default class GameBoard {
                 return
 
         }
-        this.board[x][y] = true
+        this.board[x][y] = this.ships[this.ships.length-1].name
         let count = 1
         let precaution = 1
         if ( direction === 'horizontal'){
@@ -77,22 +78,22 @@ export default class GameBoard {
             count = 0
             if (y === 9) {
                 while(count != length) {
-                    this.board[x][y-count] = true
+                    this.board[x][y-count] = this.ships[this.ships.length-1].name
                     count++
                 }
             } else if (y === 0) {
                 while (count != length) {
-                    this.board[x][y+count] = true
+                    this.board[x][y+count] = this.ships[this.ships.length-1].name
                     count++
                 }
             } else {
                 while (count != length) {
                     if (y + count === 10) {
-                        this.board[x][y-precaution] = true
+                        this.board[x][y-precaution] = this.ships[this.ships.length-1].name
                         precaution++
                     }
                    else {
-                    this.board[x][y+count] = true
+                    this.board[x][y+count] = this.ships[this.ships.length-1].name
                    }
                     count++
                 }
@@ -113,22 +114,22 @@ export default class GameBoard {
             count = 0
             if (x === 9) {
                 while(count != length) {
-                    this.board[x-count][y] = true
+                    this.board[x-count][y] = this.ships[this.ships.length-1].name
                     count++
                 }
             } else if (x === 0) {
                 while (count != length) {
-                    this.board[x+count][y] = true
+                    this.board[x+count][y] = this.ships[this.ships.length-1].name
                     count++
                 }
             } else {
                 while (count != length) {
                     if (x + count === 10) {
-                        this.board[x-precaution][y] = true
+                        this.board[x-precaution][y] = this.ships[this.ships.length-1].name
                         precaution++
                     }
                    else {
-                    this.board[x+count][y] = true
+                    this.board[x+count][y] = this.ships[this.ships.length-1].name
                    }
                     count++
                 }
@@ -136,9 +137,17 @@ export default class GameBoard {
     }
 }
     recieveAttack(x: number, y: number) {
-        if(this.board[x][y] === true) {
-            console.log('hit')
-
+        for( let i = 0; i <= this.ships.length-1; i++) {
+            const ship = this.ships[i].name
+            if (this.board[x][y] == ship) {
+                this.board[x][y] = 'Hit'
+                this.ships[i].hit()
+                this.ships[i].isSunk()
+                return
+            }
         }
+        this.missedShot[x][y] = 'Missed'
+        this.board[x][y] = 'X'
+        return
     }
 }

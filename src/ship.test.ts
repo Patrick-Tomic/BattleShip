@@ -4,11 +4,12 @@ import { Dingy } from '.';
 
 describe('Create Ship', () => {
     test('length of 4', ()=>{
-        expect(new Ship(4)).toEqual(
+        expect(new Ship(4, 'Battleship')).toEqual(
         {
             'hits': 0,
             'Sunk': false,
-            'length': 4
+            'length': 4,
+            'name': 'Battleship'
         })
     });
 });
