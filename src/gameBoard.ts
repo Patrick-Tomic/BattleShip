@@ -37,14 +37,12 @@ export default class GameBoard {
                  break
             case 3:
                 if(this.ships.length) {
-               for(let i = 0; i < this.ships.length; i++) {
-                    const ship = this.ships[i]
-                    if( ship.name ==='Submarine') {
+               for(let i = 0; i < this.ships.length -1; i++) {
+                    if( this.ships[i].name ==='Submarine') {
                         this.ships.push(new Ship(length, 'Cruiser'))
                         break
                     }
                 }
-                break
             }
                  this.ships.push(new Ship(length, 'Submarine'))
                  break
@@ -55,8 +53,8 @@ export default class GameBoard {
                  this.ships.push(new Ship(length, 'Carrier'))
                 break
             default:
-                console.log('length value not allowed')
-                return
+                
+                return 'length value not allowed'
 
         }
         this.board[x][y] = this.ships[this.ships.length-1].name
@@ -100,7 +98,7 @@ export default class GameBoard {
             }
         } else if (direction === 'vertical') {
              while (count != length) {
-                if ( x === 9) {
+                if ( x === 8) {
                     if ( this.board[x -count-1][y] === true) {
                         throw Error
                     }
@@ -148,6 +146,18 @@ export default class GameBoard {
         }
         this.missedShot[x][y] = 'Missed'
         this.board[x][y] = 'X'
+       
         return
+    }
+    shipsSunk() {
+        let isSunk = true
+        while( this.ships.length) {
+            if (this.ships[0].Sunk == false) {
+                isSunk = false    
+                return isSunk
+            }
+            this.ships.shift()
+        }
+        return isSunk
     }
 }

@@ -1,7 +1,8 @@
 import {describe, expect, test} from '@jest/globals'
 import { board } from '.'
 import Ship from './ship'
-describe('plant boat on board', () => {
+import { eventNames } from 'process'
+ describe('plant boat on board', () => {
     test('', () => {
         board.createBoat(2, 3, 2, 'vertical') 
         expect(board.board[3][3] && board.board[2][3]).toBe('Destroyer')
@@ -28,5 +29,19 @@ describe('plant boat on board', () => {
         board.recieveAttack(5,5)
         expect(board.board[5][5]).toBe('X')
     }) 
+    test('see if all boats are sunk', () => {
+        expect(board.shipsSunk()).toBe(false)
+    })
+    test('create boat too small', () => {
+        expect(board.createBoat(1,1,1,'horizontal')).toBe('length value not allowed')
+    })
 
-   
+    
+    test.only('see if shipSunk works if all sink', () => {
+        board.createBoat(1,1,2,'horizontal')
+        board.recieveAttack(1,1)
+        board.recieveAttack(1,2)
+        
+       
+        expect(board.shipsSunk()).toBe(true)
+    })
