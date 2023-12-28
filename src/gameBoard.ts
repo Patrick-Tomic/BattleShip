@@ -15,7 +15,7 @@ export default class GameBoard {
         const missed = this.missedShot
         for (let i = 0; i <10; i++) {
             let arr: any[] = []
-            let miss = []
+            let miss: any = []
             for(let j = 0; j < 10; j++) {
                 let element = ''
                 arr.push(element)
@@ -28,14 +28,15 @@ export default class GameBoard {
         this.missedShot = missed
     }
     createBoat(x: number, y: number, length: number, direction: 'vertical' | 'horizontal' ): any {
-        if (this.board[x][y] === true) {
-            throw Error
+        if (this.board[x][y] != '') {
+            return Error
         }
         switch(length) {
             case 2: 
                  this.ships.push(new Ship(length, 'Destroyer'))
                  break
             case 3:
+                if(this.ships.length){
                  this.ships.forEach((boat) => {
                     if ( boat.name === 'Submarine') {
                         this.ships.push(new Ship(length, 'Cruiser'))
@@ -45,6 +46,7 @@ export default class GameBoard {
                  if(this.ships[this.ships.length-1].name === 'Cruiser') {
                     break
                  }
+                }
                  this.ships.push(new Ship(length, 'Submarine'))
                  break
             case 4:
@@ -103,10 +105,12 @@ export default class GameBoard {
                     if ( this.board[x -count-1][y] === true) {
                         throw Error
                     }
+                    
                 } else {
                 if ( this.board[x+ count+1][y] ===true) {
                     throw Error
                 }
+                 
             }
                 count++
             } 

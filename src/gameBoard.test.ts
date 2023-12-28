@@ -1,4 +1,4 @@
-import {describe, expect, test} from '@jest/globals'
+/* 
 import { board } from '.'
 import Ship from './ship'
 import { eventNames } from 'process'
@@ -44,4 +44,15 @@ import { eventNames } from 'process'
         
        
         expect(board.shipsSunk()).toBe(true)
+    }) */
+import { error } from "console";
+import User from "./user";
+import {describe, expect, test} from '@jest/globals'
+
+describe('testing to see if ship can be placed on top of each other', () => {
+    test('cruiser on top of submarine', () => {
+        const player = new User('Player')
+        player.createBoat(1,1,3,'horizontal')
+        expect(player.createBoat(1,1,3,'horizontal')).toBe(Error)
     })
+})

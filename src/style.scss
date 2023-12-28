@@ -1,17 +1,20 @@
-*{
+* {
     margin: 0;
     padding: 0;
 }
+main{
 .player{
     display: grid;
-    grid-template-columns: repeat(10, 5vw);
+    grid-template-columns: repeat(10, 3vw);
     gap: 0;
     width: auto;
+
     .cell{
          
         border:1px solid #000000;
-        width: 5vw;
-        height: 5vh;
+        width: 3vw;
+        height: 3vh;
         
     }
+}
 }
