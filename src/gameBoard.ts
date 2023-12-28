@@ -17,7 +17,7 @@ export default class GameBoard {
             let arr: any[] = []
             let miss = []
             for(let j = 0; j < 10; j++) {
-                let element: any[] = []
+                let element = ''
                 arr.push(element)
                 miss.push(null)
             }
@@ -36,14 +36,15 @@ export default class GameBoard {
                  this.ships.push(new Ship(length, 'Destroyer'))
                  break
             case 3:
-                if(this.ships.length) {
-               for(let i = 0; i < this.ships.length -1; i++) {
-                    if( this.ships[i].name ==='Submarine') {
+                 this.ships.forEach((boat) => {
+                    if ( boat.name === 'Submarine') {
                         this.ships.push(new Ship(length, 'Cruiser'))
-                        break
+                        return
                     }
-                }
-            }
+                 }) 
+                 if(this.ships[this.ships.length-1].name === 'Cruiser') {
+                    break
+                 }
                  this.ships.push(new Ship(length, 'Submarine'))
                  break
             case 4:

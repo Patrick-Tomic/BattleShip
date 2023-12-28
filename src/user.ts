@@ -13,6 +13,21 @@ export default class User {
         const y = Math.floor((Math.random() * 8)+1)
         
     }
+    createBoat(x: number, y: number, length: number, direction: 'vertical' | 'horizontal' ): any {
+    return this.gameBoard.createBoat(x, y, length, direction)
+    }
+    boardCell(x:number, y: number):any {
+        return this.gameBoard.board[x][y]
+    }
+    board() {
+        return this.gameBoard.board
+    }
+    ships() {
+        return this.gameBoard.ships
+    }
+    shipsSunk() {
+        return this.gameBoard.shipsSunk()
+    }
 }
 
  
