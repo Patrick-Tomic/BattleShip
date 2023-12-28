@@ -1,4 +1,4 @@
-import { dir, error } from "console"
+
 import Ship from "./ship"
 export default class GameBoard {
     board: any[]
@@ -28,114 +28,78 @@ export default class GameBoard {
         this.missedShot = missed
     }
     createBoat(x: number, y: number, length: number, direction: 'vertical' | 'horizontal' ): any {
-        if (this.board[x][y] != '') {
-            return Error
-        }
-        switch(length) {
+       if (this.board[x][y] != '') {
+        console.log('position taken')
+        return
+       }
+       else {
+        switch( length ) {
             case 2: 
-                 this.ships.push(new Ship(length, 'Destroyer'))
-                 break
-            case 3:
-                if(this.ships.length){
-                 this.ships.forEach((boat) => {
-                    if ( boat.name === 'Submarine') {
-                        this.ships.push(new Ship(length, 'Cruiser'))
+            this.ships.push(new Ship(length, 'Destroyer'))
+            break
+            case 3: 
+            if(this.ships.length){
+            this.ships.forEach((boat) => {
+                if(boat.name === 'Submarine') {
+                    this.ships.push(new Ship(length, 'Cruiser'))
+                }
+            })
+        
+            if(this.ships[this.ships.length-1].name === 'Cruiser') break
+        }
+            this.ships.push(new Ship(length, 'Submarine'))
+            break
+            case 4: 
+            this.ships.push(new Ship(length, 'Battleship'))
+            break
+            case 5:
+                this.ships.push(new Ship(length, 'Carrier'))
+                break 
+
+            default:
+                console.log('not valid length')
+                return
+        }
+        let height = 0
+        if(direction === 'horizontal') {
+            // y == 9
+            if ( y === 9) {
+                while(height != length) {
+                    if(this.board[x][y-height] != ''){
+                        console.log('not valid')
                         return
                     }
-                 }) 
-                 if(this.ships[this.ships.length-1].name === 'Cruiser') {
-                    break
-                 }
+                    height++
                 }
-                 this.ships.push(new Ship(length, 'Submarine'))
-                 break
-            case 4:
-                 this.ships.push(new Ship(length, 'Battleship'))
-                 break
-            case 5: 
-                 this.ships.push(new Ship(length, 'Carrier'))
-                break
-            default:
-                
-                return 'length value not allowed'
-
-        }
-        this.board[x][y] = this.ships[this.ships.length-1].name
-        let count = 1
-        let precaution = 1
-        if ( direction === 'horizontal'){
-            while (count != length) {
-                if (y === 9) {
-                    if( this.board[x][y-count-1] === true){
-                        throw Error
-                    }
-                } else {
-                if ( this.board[x][y+ count+1]  === true) {
-                    throw Error
-                }
-            }
-                count++
-            } 
-            count = 0
-            if (y === 9) {
-                while(count != length) {
-                    this.board[x][y-count] = this.ships[this.ships.length-1].name
-                    count++
-                }
-            } else if (y === 0) {
-                while (count != length) {
-                    this.board[x][y+count] = this.ships[this.ships.length-1].name
-                    count++
-                }
-            } else {
-                while (count != length) {
-                    if (y + count === 10) {
-                        this.board[x][y-precaution] = this.ships[this.ships.length-1].name
-                        precaution++
-                    }
-                   else {
-                    this.board[x][y+count] = this.ships[this.ships.length-1].name
-                   }
-                    count++
-                }
-            }
-        } else if (direction === 'vertical') {
-             while (count != length) {
-                if ( x === 8) {
-                    if ( this.board[x -count-1][y] === true) {
-                        throw Error
-                    }
+                height = 0
+                while(height != length) {
                     
-                } else {
-                if ( this.board[x+ count+1][y] ===true) {
-                    throw Error
+                        this.board[x][y-height] = 'O'
+                        height++
+                    
                 }
-                 
+                height = 0
+           }
+           //if y == 0
+           else if( y === 0 ) {
+            while( height != length) {
+                if (this.board[x][y+height] != '') {
+                    console.log('not valid')
+                    return
+                }
+                height++
             }
-                count++
-            } 
-            count = 0
-            if (x === 9) {
-                while(count != length) {
-                    this.board[x-count][y] = this.ships[this.ships.length-1].name
-                    count++
-                }
-            } else if (x === 0) {
-                while (count != length) {
-                    this.board[x+count][y] = this.ships[this.ships.length-1].name
-                    count++
-                }
-            } else {
-                while (count != length) {
-                    if (x + count === 10) {
-                        this.board[x-precaution][y] = this.ships[this.ships.length-1].name
-                        precaution++
-                    }
-                   else {
-                    this.board[x+count][y] = this.ships[this.ships.length-1].name
-                   }
-                    count++
-                }
+            height = 0
+            while (height != length) {
+                this.board[x][y+height] = 'O'
+                height ++
+            }
+            height = 0
+           }
+           // for all other occasions but y cant hit 9 or not valid
+           else {
+            while()
+           }
         }
     }
 }
@@ -166,3 +130,5 @@ export default class GameBoard {
         return isSunk
     }
 }
+
+

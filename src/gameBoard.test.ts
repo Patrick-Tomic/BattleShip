@@ -45,14 +45,26 @@ import { eventNames } from 'process'
        
         expect(board.shipsSunk()).toBe(true)
     }) */
-import { error } from "console";
+import GameBoard from "./gameBoard";
 import User from "./user";
 import {describe, expect, test} from '@jest/globals'
+ 
+describe('testing gameboard functions,', () => {
+    const board = new GameBoard()
+    test('createBoat function' ,() => {
+        board.createBoat(2,9,3,'horizontal')
+        expect(board.createBoat(2,8,5,'horizontal')).toBe(console.log('not valid'))
+        expect(board.board[2][9]).toBe('O')
+        expect(board.board[2][7]).toBe('O')
+        expect(board.board[2][8]).toBe('O')
 
-describe('testing to see if ship can be placed on top of each other', () => {
-    test('cruiser on top of submarine', () => {
-        const player = new User('Player')
-        player.createBoat(1,1,3,'horizontal')
-        expect(player.createBoat(1,1,3,'horizontal')).toBe(Error)
+
+        board.createBoat(0,0,5,'horizontal')
+        expect(board.createBoat(0,5,2,'horizontal')).toBe(console.log('not valid'))
+        expect(board.board[0][0]).toBe('O')
+        expect(board.board[0][1]).toBe('O')
+        expect(board.board[0][2]).toBe('O')
+        expect(board.board[0][3]).toBe('O')
+        expect(board.board[0][4]).toBe('O')
     })
 })

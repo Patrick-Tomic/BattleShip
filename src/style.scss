@@ -9,12 +9,13 @@ main{
     gap: 0;
     width: auto;
 
-    .cell{
-         
+    .cell{        
         border:1px solid #000000;
         width: 3vw;
         height: 3vh;
-        
+    }
+    .cell:hover{
+        background-color: yellow;
     }
 }
 }
