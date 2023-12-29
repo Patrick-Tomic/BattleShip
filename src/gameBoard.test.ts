@@ -51,7 +51,8 @@ import {describe, expect, test} from '@jest/globals'
  
 describe('testing gameboard functions,', () => {
     const board = new GameBoard()
-    test('createBoat function' ,() => {
+    test('createBoat function horizontal' ,() => {
+    
         board.createBoat(2,9,3,'horizontal')
         expect(board.createBoat(2,8,5,'horizontal')).toBe(console.log('not valid'))
         expect(board.board[2][9]).toBe('O')
@@ -66,5 +67,12 @@ describe('testing gameboard functions,', () => {
         expect(board.board[0][2]).toBe('O')
         expect(board.board[0][3]).toBe('O')
         expect(board.board[0][4]).toBe('O')
+
+       
+        board.createBoat(6,6,5,'horizontal')
+        expect(board.board[6][6]).toBe('O')
+        expect(board.board[6][5]).toBe('O')
+
+         
     })
 })

@@ -28,6 +28,7 @@ export default class GameBoard {
         this.missedShot = missed
     }
     createBoat(x: number, y: number, length: number, direction: 'vertical' | 'horizontal' ): any {
+        
        if (this.board[x][y] != '') {
         console.log('position taken')
         return
@@ -61,6 +62,7 @@ export default class GameBoard {
                 return
         }
         let height = 0
+        let sub = 1
         if(direction === 'horizontal') {
             // y == 9
             if ( y === 9) {
@@ -79,6 +81,7 @@ export default class GameBoard {
                     
                 }
                 height = 0
+                return
            }
            //if y == 0
            else if( y === 0 ) {
@@ -95,14 +98,42 @@ export default class GameBoard {
                 height ++
             }
             height = 0
+            return
            }
            // for all other occasions but y cant hit 9 or not valid
-           else {
-            while()
+           if ( y > 0 && y < 9){
+             while(height != length) {
+                if(y+height < 10){
+                if(this.board[x][y+height] !='') {
+                    console.log('not valid')
+                    return
+                }
+            }
+                if (y + height >= 10) {
+                    if(this.board[x][y-sub] != '') {
+                        console.log('not valid')
+                        return
+                    }
+                    sub++
+                }
+                height++
+             }
+             height = 0
+             sub = 1
+             while(height != length) {
+                if(y + height >= 10) {
+                    this.board[x][y-sub] = 'O'
+                    sub++
+                } else {
+                    this.board[x][y+height] = 'O'
+                }
+                height++
+             }
            }
         }
+        }
     }
-}
+
     recieveAttack(x: number, y: number) {
         for( let i = 0; i <= this.ships.length-1; i++) {
             const ship = this.ships[i].name
