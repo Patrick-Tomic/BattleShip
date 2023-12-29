@@ -1,4 +1,5 @@
 
+import { dir } from "console"
 import Ship from "./ship"
 export default class GameBoard {
     board: any[]
@@ -69,7 +70,7 @@ export default class GameBoard {
                 while(height != length) {
                     if(this.board[x][y-height] != ''){
                         console.log('not valid')
-                        return
+                        return false
                     }
                     height++
                 }
@@ -88,7 +89,7 @@ export default class GameBoard {
             while( height != length) {
                 if (this.board[x][y+height] != '') {
                     console.log('not valid')
-                    return
+                    return false
                 }
                 height++
             }
@@ -101,18 +102,18 @@ export default class GameBoard {
             return
            }
            // for all other occasions but y cant hit 9 or not valid
-           if ( y > 0 && y < 9){
+           else{
              while(height != length) {
                 if(y+height < 10){
                 if(this.board[x][y+height] !='') {
                     console.log('not valid')
-                    return
+                    return false
                 }
             }
                 if (y + height >= 10) {
                     if(this.board[x][y-sub] != '') {
                         console.log('not valid')
-                        return
+                        return false
                     }
                     sub++
                 }
@@ -130,6 +131,67 @@ export default class GameBoard {
                 height++
              }
            }
+        }
+        else if(direction === 'vertical') {
+            let width = 0
+            sub = 0
+            if(x === 9) {
+                while(width != length) {
+                    if(this.board[x-width][y] != ''){
+                        console.log('not valid')
+                        return false
+                    }
+                    width++
+                }
+                width = 0
+                while(width != length) {
+                    this.board[x-width][y] = 'O'
+                    width++
+                }
+                return
+            } else if ( x === 0){
+                while(width != length) {
+                    if(this.board[x+width][y] != ''){
+                        console.log('not valid')
+                        return false
+                    }
+                    width++
+                }
+                width = 0
+                while(width != length) {
+                    this.board[x+width][y] = 'O'
+                    width++
+                }
+                return false
+            }else {
+                while(width != length) {
+                    if(x+width <10) {
+                        if(this.board[x+width][y] != '') {
+                            console.log('not valid')
+                            return false
+                        }
+                    }
+                    if(x+width >=10) {
+                        if(this.board[x-sub][y] != ''){
+                            console.log('not valid')
+                            return false
+                        }
+                        sub++
+                    }
+                    width++
+                }
+                width = 0
+                sub = 1
+                while(width != length) {
+                    if(x+width>=10){
+                        this.board[x-sub][y] = 'O'
+                        sub++
+                    } else {
+                        this.board[x+width][y] = 'O'
+                    }
+                    width++
+                }
+            }
         }
         }
     }
