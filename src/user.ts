@@ -10,23 +10,25 @@ export default class User {
     }
     randomCreateBoats(lengthVals: number[] = [2,3,3,4,5] ) {
         if(lengthVals.length < 1) {
-            console.log(this.ships())
+            console.log('finished random boats')
+            console.log(this.board())
             return
         }
         const values = lengthVals
-         const x = Math.floor((Math.random()*8)+1)
-         const y = Math.floor((Math.random()*8)+1)
+         const x = Math.floor((Math.random()*9)+1)
+         const y = Math.floor((Math.random()*9)+1)
          const choice = Math.floor((Math.random()*2)+1)
-         let bool: false | undefined
+         let bool: false | true = false
          if (choice === 1) {
              bool = this.createBoat(x,y,values[0],'horizontal')}
         else if(choice === 2) {
              bool = this.createBoat(x,y,values[0],'vertical')
         }
+
         if(bool === false) {
-            console.log('false')
             this.randomCreateBoats(values)
-        } else {
+        } else if(bool === true){
+         
             values.shift()
             this.randomCreateBoats(values)
         }
@@ -55,7 +57,7 @@ export default class User {
     }
 }
 const computer = new User('Computer')
-computer.randomCreateBoats()
+ 
 console.log(computer.board())
 
  

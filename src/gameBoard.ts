@@ -32,7 +32,7 @@ export default class GameBoard {
         
        if (this.board[x][y] != '') {
         console.log('position taken')
-        return
+        return false
        }
        else {
         switch( length ) {
@@ -60,7 +60,7 @@ export default class GameBoard {
 
             default:
                 console.log('not valid length')
-                return
+                return false
         }
         let height = 0
         let sub = 1
@@ -82,7 +82,6 @@ export default class GameBoard {
                     
                 }
                 height = 0
-                return
            }
            //if y == 0
            else if( y === 0 ) {
@@ -99,7 +98,6 @@ export default class GameBoard {
                 height ++
             }
             height = 0
-            return
            }
            // for all other occasions but y cant hit 9 or not valid
            else{
@@ -148,7 +146,7 @@ export default class GameBoard {
                     this.board[x-width][y] = 'O'
                     width++
                 }
-                return
+                return true
             } else if ( x === 0){
                 while(width != length) {
                     if(this.board[x+width][y] != ''){
@@ -162,7 +160,6 @@ export default class GameBoard {
                     this.board[x+width][y] = 'O'
                     width++
                 }
-                return false
             }else {
                 while(width != length) {
                     if(x+width <10) {
@@ -191,9 +188,11 @@ export default class GameBoard {
                     }
                     width++
                 }
+                
             }
         }
         }
+        return true
     }
 
     recieveAttack(x: number, y: number) {
