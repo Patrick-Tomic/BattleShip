@@ -61,11 +61,8 @@ export default class GameBoard {
         let bool = false
         if(direction === 'horizontal') {
             // y == 9
-            if ( position % 9 === 0) {
-                if(position === 0) {
-                    console.log('next')
-                }
-                else{
+            if ( position % 10 === 9) {
+                 
                 while(height != length) {
                     if(this.board[position-height] != ''){
                         console.log('not valid')
@@ -82,7 +79,6 @@ export default class GameBoard {
                 }
                 height = 0
            }
-        }
            //if y == 0
            else if( position % 10 === 0 ) {
             while( height != length) {
@@ -107,7 +103,7 @@ export default class GameBoard {
                 if(position+height %10 ===0) {
                     bool = true
                 }
-                if(bool === false && position+height % 10 ===1){
+                if(bool === false && position+height % 10>=9){
                 if(this.board[position+height] !='') {
                     console.log('not valid')
                     return false
@@ -129,7 +125,7 @@ export default class GameBoard {
                 if(position+height % 10 === 0) {
                     bool = true
                 }
-                if(bool ===false && position+height % 10 === 1) {
+                if(bool ===false && position+height % 10 >= 9) {
                     this.ships[this.ships.length-1].positions.push(position+height)
                     this.board[position+height] = 'O'
                 } if(bool === true) {
@@ -145,108 +141,113 @@ export default class GameBoard {
             let width = 0
             sub = 1
             bool = false
-            if(x === 9) {
+            if(position %90 >= 0 && position <=9) {
                 while(width != length) {
-                    if(this.board[x-width][y] != ''){
-                        console.log('not valid')
-                        return false
-                    }
-                    width++
+                    if(this.board[position-width] != ''){
+                 console.log('not valid')
+                 return false
                 }
+                width+=10
+            }
                 width = 0
                 while(width != length) {
-                    const array: number[] = [x-width, y]
-                    this.ships[this.ships.length-1].positions.push(array)
-                    this.board[x-width][y] = 'O'
-                    width++
+                    this.ships[this.ships.length-1].positions.push(position-width)
+                    this.board[position-width] = 'O'
+                    width+=10
                 }
                 return true
-            } else if ( x === 0){
+            } else if ( position >=9){
                 while(width != length) {
-                    if(this.board[x+width][y] != ''){
+                    if(this.board[position+width] != ''){
                         console.log('not valid')
                         return false
                     }
-                    width++
+                    width+=10
                 }
                 width = 0
                 while(width != length) {
-                    const array: number[] = [x+width, y]
-                    this.ships[this.ships.length-1].positions.push(array)
-                    this.board[x+width][y] = 'O'
-                    width++
+                    this.ships[this.ships.length-1].positions.push(position+width)
+                    this.board[position+width] = 'O'
+                    width+=10
                 }
             }else {
+                sub = 10
                 while(width != length) {
-                    if(x+width <10) {
-                        if(this.board[x+width][y] != '') {
+                    if(position+width % 90 === 10) {
+                        bool = true
+                    }
+                        if(bool === false &&this.board[position+width] != '') {
                             console.log('not valid')
                             return false
                         }
                     }
-                    if(x+width >=10) {
-                        if(this.board[x-sub][y] != ''){
+                    if(bool = true) {
+                        if(this.board[position-sub] != ''){
                             console.log('not valid')
                             return false
                         }
-                        sub++
+                        sub+=10
                     }
-                    width++
+                    width+=10
                 }
                 width = 0
-                sub = 1
+                sub = 10
+                bool = false
                 while(width != length) {
-                    if(x+width>=10){
-                        const array: number[] = [x-sub, y]
-                        this.ships[this.ships.length-1].positions.push(array)
-                        this.board[x-sub][y] = 'O'
-                        sub++
-                    } else {
-                        const array: number[] = [x+width, y]
-                        this.ships[this.ships.length-1].positions.push(array)
-                        this.board[x+width][y] = 'O'
+                    if(position+width % 90 === 10){
+                        bool = true
+                    }
+                    if(bool === false){
+                        this.ships[this.ships.length-1].positions.push(position+width)
+                        this.board[position+width] = 'O'
+                        
+                    }else if(bool === true) {
+                        this.ships[this.ships.length-1].positions.push(position-sub)
+                        this.board[position-sub] = 'O'
+                        sub+=10
                     }
                     width++
                 }
                 
             }
-        }
+        
         }
         return true
     }
 
-    recieveAttack(x: number, y: number) {
+    recieveAttack(position:number) {
          
              
-            if (this.board[x][y] == 'O') {
-                this.board[x][y] = 'X'
+            if (this.board[position] == 'O') {
+                this.board[position] = 'X'
               for(let i = 0; i < this.ships.length; i++) {
                  for(let j = 0; j< this.ships[i].positions.length-1; j++){
                     
-                        if(this.ships[i].positions[j][0] === x && this.ships[i].positions[j][1] === y) {
+                        if(this.ships[i].positions[j] === position) {
                             console.log('hit')
                             this.ships[i].hit()
                             this.ships[i].isSunk()
+                            return
                         }
                     
                  }
               }
-              return 
             }
             console.log('miss')
-        this.missedShot[x][y] = 'miss'
-        this.board[x][y] = 'X'
+        this.missedShot[position] = 'miss'
+        this.board[position] = 'X'
        
         return
     }
     shipsSunk() {
         let isSunk = true
-        while( this.ships.length) {
+        const boats = this.ships
+        while( boats.length) {
             if (this.ships[0].Sunk == false) {
                 isSunk = false    
                 return isSunk
             }
-            this.ships.shift()
+            boats.shift()
         }
         return isSunk
     }
