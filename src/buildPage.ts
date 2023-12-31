@@ -15,8 +15,7 @@ for(let i = 0; i < player.board().length; i++) {
         const div = document.createElement('div')
         div.classList.add('cell')
         if ( player.boardCell(i, j) != '') {
-            div.style.backgroundColor = 'teal'
-           
+            div.style.backgroundColor = 'teal'           
         } else {
             div.innerHTML = ''
         }
@@ -28,14 +27,16 @@ for(let i = 0; i < computer.board().length; i++) {
     for( let j = 0; j < 10; j++) {
         const div = document.createElement('div')
         div.classList.add('cell')
-        if ( computer.boardCell(i, j) != '') {
-            div.style.backgroundColor = 'teal'
-           
-        } else {
+         if(computer.boardCell(i,j) != '') {
             div.innerHTML = ''
-        }
+            div.classList.add('boat')
+         } else div.innerHTML = ''
          document.querySelector('.computer')?.appendChild(div)
     }
 }
+
+
+ 
 }
+
  

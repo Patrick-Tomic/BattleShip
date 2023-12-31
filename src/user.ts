@@ -35,6 +35,9 @@ export default class User {
          
             
     }
+    recieveAttack(x:number,y:number ) {
+        return this.gameBoard.recieveAttack(x,y)
+    }
     randomAttack(){
         const x = Math.floor((Math.random() * 8)+1)
         const y = Math.floor((Math.random() * 8)+1)

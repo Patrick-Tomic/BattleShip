@@ -11,12 +11,13 @@ main{
         gap: 0;
         width: auto;
     
-        .cell{        
+        .compCell{        
             border:1px solid #000000;
             width: 3vw;
             height: 3vh;
+            
         }
-        .cell:hover{
+        .compCell:hover{
             background-color: yellow;
         }
     }
@@ -26,13 +27,11 @@ main{
     gap: 0;
     width: auto;
 
-    .cell{        
+    .playerCell{        
         border:1px solid #000000;
         width: 3vw;
         height: 3vh;
     }
-    .cell:hover{
-        background-color: yellow;
-    }
+     
 }
 }

@@ -13,24 +13,18 @@ export default class GameBoard {
     }
     initialize() {
         const board = this.board
-        const missed = this.missedShot
-        for (let i = 0; i <10; i++) {
-            let arr: any[] = []
-            let miss: any = []
-            for(let j = 0; j < 10; j++) {
-                let element = ''
-                arr.push(element)
-                miss.push(null)
-            }
-            board.push(arr)
-            missed.push(miss)
+        const missedShot = this.missedShot
+        for (let i = 0; i <100; i++) {
+          
+          board.push('')
+          missedShot.push('')
         }
         this.board = board
-        this.missedShot = missed
+        this.missedShot = missedShot
     }
-    createBoat(x: number, y: number, length: number, direction: 'vertical' | 'horizontal' ): any {
+    createBoat(position:number, length: number, direction: 'vertical' | 'horizontal' ): any {
         
-       if (this.board[x][y] != '') {
+       if (this.board[position] != '') {
         console.log('position taken')
         return false
        }
@@ -64,11 +58,16 @@ export default class GameBoard {
         }
         let height = 0
         let sub = 1
+        let bool = false
         if(direction === 'horizontal') {
             // y == 9
-            if ( y === 9) {
+            if ( position % 9 === 0) {
+                if(position === 0) {
+                    console.log('next')
+                }
+                else{
                 while(height != length) {
-                    if(this.board[x][y-height] != ''){
+                    if(this.board[position-height] != ''){
                         console.log('not valid')
                         return false
                     }
@@ -76,17 +75,18 @@ export default class GameBoard {
                 }
                 height = 0
                 while(height != length) {
-                    
-                        this.board[x][y-height] = 'O'
+                        this.ships[this.ships.length-1].positions.push(position-height)
+                        this.board[position-height] = 'O'
                         height++
                     
                 }
                 height = 0
            }
+        }
            //if y == 0
-           else if( y === 0 ) {
+           else if( position % 10 === 0 ) {
             while( height != length) {
-                if (this.board[x][y+height] != '') {
+                if (this.board[position+height] != '') {
                     console.log('not valid')
                     return false
                 }
@@ -94,22 +94,27 @@ export default class GameBoard {
             }
             height = 0
             while (height != length) {
-                this.board[x][y+height] = 'O'
+                this.ships[this.ships.length-1].positions.push(position+height)
+                this.board[position+height] = 'O'
                 height ++
             }
             height = 0
            }
            // for all other occasions but y cant hit 9 or not valid
            else{
+            
              while(height != length) {
-                if(y+height < 10){
-                if(this.board[x][y+height] !='') {
+                if(position+height %10 ===0) {
+                    bool = true
+                }
+                if(bool === false && position+height % 10 ===1){
+                if(this.board[position+height] !='') {
                     console.log('not valid')
                     return false
                 }
             }
-                if (y + height >= 10) {
-                    if(this.board[x][y-sub] != '') {
+                if (bool === true) {
+                    if(this.board[position-sub] != '') {
                         console.log('not valid')
                         return false
                     }
@@ -119,12 +124,18 @@ export default class GameBoard {
              }
              height = 0
              sub = 1
+             bool = false
              while(height != length) {
-                if(y + height >= 10) {
-                    this.board[x][y-sub] = 'O'
-                    sub++
-                } else {
-                    this.board[x][y+height] = 'O'
+                if(position+height % 10 === 0) {
+                    bool = true
+                }
+                if(bool ===false && position+height % 10 === 1) {
+                    this.ships[this.ships.length-1].positions.push(position+height)
+                    this.board[position+height] = 'O'
+                } if(bool === true) {
+                    this.ships[this.ships.length-1].positions.push(position-sub)
+                    this.board[position-sub] = 'O'
+                    position++
                 }
                 height++
              }
@@ -132,7 +143,8 @@ export default class GameBoard {
         }
         else if(direction === 'vertical') {
             let width = 0
-            sub = 0
+            sub = 1
+            bool = false
             if(x === 9) {
                 while(width != length) {
                     if(this.board[x-width][y] != ''){
@@ -143,6 +155,8 @@ export default class GameBoard {
                 }
                 width = 0
                 while(width != length) {
+                    const array: number[] = [x-width, y]
+                    this.ships[this.ships.length-1].positions.push(array)
                     this.board[x-width][y] = 'O'
                     width++
                 }
@@ -157,6 +171,8 @@ export default class GameBoard {
                 }
                 width = 0
                 while(width != length) {
+                    const array: number[] = [x+width, y]
+                    this.ships[this.ships.length-1].positions.push(array)
                     this.board[x+width][y] = 'O'
                     width++
                 }
@@ -181,9 +197,13 @@ export default class GameBoard {
                 sub = 1
                 while(width != length) {
                     if(x+width>=10){
+                        const array: number[] = [x-sub, y]
+                        this.ships[this.ships.length-1].positions.push(array)
                         this.board[x-sub][y] = 'O'
                         sub++
                     } else {
+                        const array: number[] = [x+width, y]
+                        this.ships[this.ships.length-1].positions.push(array)
                         this.board[x+width][y] = 'O'
                     }
                     width++
@@ -196,16 +216,25 @@ export default class GameBoard {
     }
 
     recieveAttack(x: number, y: number) {
-        for( let i = 0; i <= this.ships.length-1; i++) {
-            const ship = this.ships[i].name
-            if (this.board[x][y] == ship) {
-                this.board[x][y] = 'Hit'
-                this.ships[i].hit()
-                this.ships[i].isSunk()
-                return
+         
+             
+            if (this.board[x][y] == 'O') {
+                this.board[x][y] = 'X'
+              for(let i = 0; i < this.ships.length; i++) {
+                 for(let j = 0; j< this.ships[i].positions.length-1; j++){
+                    
+                        if(this.ships[i].positions[j][0] === x && this.ships[i].positions[j][1] === y) {
+                            console.log('hit')
+                            this.ships[i].hit()
+                            this.ships[i].isSunk()
+                        }
+                    
+                 }
+              }
+              return 
             }
-        }
-        this.missedShot[x][y] = 'Missed'
+            console.log('miss')
+        this.missedShot[x][y] = 'miss'
         this.board[x][y] = 'X'
        
         return
