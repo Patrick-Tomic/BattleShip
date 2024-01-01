@@ -1,3 +1,4 @@
+import Ship from './ship'
 import  './style.scss'
 import User from './user'
     const player = new User('Player')
@@ -13,8 +14,10 @@ for(let i = 0; i < player.board().length; i++) {
      
         const div = document.createElement('div')
       div.classList.add('playerCell')
+      div.id = `${i}`
         if ( player.boardCell(i) != '') {
-            div.style.backgroundColor = 'teal'           
+            div.style.backgroundColor = 'teal'      
+                 
         } else {
             div.innerHTML = ''
 
@@ -27,35 +30,66 @@ for(let i = 0; i < computer.board().length; i++) {
    
         const div = document.createElement('div')
         div.classList.add('compCell')
+        div.id = `${i}`
          if(computer.boardCell(i) != '') { 
             div.classList.add('boat')
-            div.id = `${i}`
+       
+            
          
      }      
          document.querySelector('.computer')?.appendChild(div)
     
      
 }
-
-const compCells = document.querySelectorAll('.compCell')
-compCells.forEach((cell) => {
-    cell.addEventListener('click', () => {
-        if(cell.className === 'compCell boat') {
-             const position = parseInt(cell.id)
-             let count = 0
-             while(count <= 5) {
-                for(let i = 0; i < computer.ships()[count].positions.length; i++) {
-                   if(position === computer.ships()[count].positions[i]){
-                    cell.setAttribute('style', 'background-color:yellow;')
-                    computer.ships()[count].hit()
-                    computer.ships()[count].isSunk()
-                   }
-                } 
-                count++
+ 
+Game(player,computer)
+function Game(user: User, computer: User, turn: 1 | 2 = 1) {
+    if(user.shipsSunk() === true) {
+        console.log(computer.name+' wins')
+        return
+    } else if(computer.shipsSunk() === true) {
+        console.log(user.name +' wins')
+        return
+    }
+   if(turn === 1) {
+    const compCells = document.querySelectorAll('.compCells')
+    compCells.forEach((cell) => {
+        const position = parseInt(cell.id)
+        let count = 0
+      cell.addEventListener('click', () => {    
+            if(computer.board()[position] === 'M' || 'H'){
+                alert('position already hit<br> try again')
+                Game(user,computer,turn)
             }
-        }
-    })
-})
+            let bool = false
+                while(computer.ships().length != count) {
+                    const ship: Ship = computer.ships()[count]
+                    const length: number = ship.positions.length
+                    for(let i = 0; i < length; i++) {
+                        if(position === ship.positions[i]) {
+                            cell.innerHTML = 'X'
+                            ship.hit()
+                            ship.isSunk()
+                            computer.board()[position] = 'H'
+                            bool = true
+                        }
+                    }
+                    if(bool === true) {
+                        break
+                    }
+                    count++
+                }
+                if(bool === false) computer.board()[position] = 'M'
+            })
+    }) 
+   }
+   
+}
+ 
+            
+               
+       
+
  
  
  

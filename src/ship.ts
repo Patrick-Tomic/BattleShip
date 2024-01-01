@@ -21,9 +21,9 @@ export default class Ship{
         if (this.hits === this.length) {
             this.Sunk = true
             console.log("player has sunk your " + this.name)
-            return
+            return true
         } else {
-            return 'not sunk'
+            return false
         }
     }
 }

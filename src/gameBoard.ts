@@ -272,6 +272,7 @@ export default class GameBoard {
             }
             boats.shift()
         }
+        console.log('Game Over')
         return isSunk
     }
 }

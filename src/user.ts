@@ -34,8 +34,7 @@ export default class User {
         return this.gameBoard.recieveAttack(position)
     }
     randomAttack(){
-        const x = Math.floor((Math.random() * 8)+1)
-        const y = Math.floor((Math.random() * 8)+1)
+       const position = Math.floor((Math.random()*99)+1)
         
     }
     createBoat(position:number, length: number, direction: 'vertical' | 'horizontal' ): any {
@@ -46,6 +45,9 @@ export default class User {
     }
     board() {
         return this.gameBoard.board
+    }
+    missedShots() {
+        return this.gameBoard.missedShot
     }
     ships() {
         return this.gameBoard.ships
