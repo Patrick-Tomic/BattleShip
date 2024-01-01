@@ -1,9 +1,5 @@
 import  './style.scss'
 import User from './user'
-
- 
-
-
     const player = new User('Player')
     const computer = new User('Computer')
     
