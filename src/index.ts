@@ -43,8 +43,8 @@ for(let i = 0; i < computer.board().length; i++) {
 
 let count = 0
 while(count < 5) {
-    console.log(player.ships()[count].positions)
-    
+    console.log('player ' + player.ships()[count].positions)
+    console.log('computer ' + computer.ships()[count].positions)
     count++
 }
  

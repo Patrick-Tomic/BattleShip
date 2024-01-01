@@ -1,7 +1,3 @@
-const position = 11
-const answer = position %90
- 
-if(position+10 % 90 >= 10) {
-    console.log(true)
+for(let i = 0; i< 100; i++) {
+    console.log(Math.floor(Math.random()*99+1))
 }
-else console.log(answer)

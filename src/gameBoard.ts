@@ -65,7 +65,7 @@ export default class GameBoard {
                  
                 while(height != length) {
                     if(this.board[position-height] != ''){
-                        console.log('not valid')
+                        
                         return false
                     }
                     height++
@@ -78,12 +78,13 @@ export default class GameBoard {
                     
                 }
                 height = 0
+                return true
            }
            //if y == 0
            else if( position % 10 === 0 ) {
             while( height != length) {
                 if (this.board[position+height] != '') {
-                    console.log('not valid')
+                    
                     return false
                 }
                 height++
@@ -95,6 +96,7 @@ export default class GameBoard {
                 height ++
             }
             height = 0
+            return true
            }
            // for all other occasions but y cant hit 9 or not valid
            else{
@@ -105,13 +107,13 @@ export default class GameBoard {
                 }
                 if(bool === false){
                 if(this.board[position+height] !='') {
-                    console.log('not valid')
+                    
                     return false
                 }
             }
                 if (bool === true) {
                     if(this.board[position-sub] != '') {
-                        console.log('not valid')
+                        
                         return false
                     }
                     sub++
@@ -138,6 +140,7 @@ export default class GameBoard {
                 height++
              }
            }
+           return true
         }
         else if(direction === 'vertical') {
             let width = 0
@@ -148,7 +151,7 @@ export default class GameBoard {
             if(position >=90 && position <=99) {
                 while(count != length) {
                     if(this.board[position-width] != ''){
-                 console.log('not valid')
+                 
                  return false
                 }
                 width+=10
@@ -170,7 +173,7 @@ export default class GameBoard {
             width = 0
                 while(count != length) {
                     if(this.board[position+width] != ''){
-                        console.log('not valid')
+                        
                         return false
                     }
                     width+=10
@@ -190,16 +193,15 @@ export default class GameBoard {
                 count = 0
                 bool = false
                 while(count != length) {
-                    console.log(position+width)
                     if(position + width >= 100) {
                         bool = true
                     }
                         if(bool === false && this.board[position+width] != '') {
-                            console.log('not valid')
+                            
                             return false
                         } else  if(bool === true) {
                         if(this.board[position-sub] != ''){
-                            console.log('not valid')
+                            
                             return false
                         }
                         sub+=10

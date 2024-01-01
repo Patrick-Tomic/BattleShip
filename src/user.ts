@@ -10,8 +10,7 @@ export default class User {
     }
     randomCreateBoats(lengthVals: number[] = [2,3,3,4,5] ) {
         if(lengthVals.length < 1) {
-            console.log('finished random boats')
-            console.log(this.board())
+          
             return
         }
         const values = lengthVals
@@ -23,16 +22,13 @@ export default class User {
         else if(choice === 2) {
              bool = this.createBoat(position,values[0],'vertical')
         }
-
         if(bool === false) {
             this.randomCreateBoats(values)
         } else if(bool === true){
          
             values.shift()
             this.randomCreateBoats(values)
-        }
-         
-            
+        }   
     }
     recieveAttack(position:number) {
         return this.gameBoard.recieveAttack(position)
@@ -60,6 +56,6 @@ export default class User {
 }
 const computer = new User('Computer')
  
-console.log(computer.board())
+
 
  
