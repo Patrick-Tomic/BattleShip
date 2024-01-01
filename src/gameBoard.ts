@@ -206,7 +206,7 @@ export default class GameBoard {
             }
         }
         this.missedShot[x][y] = 'Missed'
-        this.board[x][y] = 'X'
+      
        
         return
     }
