@@ -5,8 +5,8 @@ export default class User {
     constructor(name: 'Player' | 'Computer'){
         this.name = name
     }
-    getCoordinates(x: number, y: number) {
-        this.gameBoard.recieveAttack(x, y)
+    getCoordinates(position:number) {
+        this.gameBoard.recieveAttack(position)
     }
     randomCreateBoats(lengthVals: number[] = [2,3,3,4,5] ) {
         if(lengthVals.length < 1) {
@@ -15,14 +15,13 @@ export default class User {
             return
         }
         const values = lengthVals
-         const x = Math.floor((Math.random()*9)+1)
-         const y = Math.floor((Math.random()*9)+1)
+        const position = Math.floor(Math.random()*99+1)
          const choice = Math.floor((Math.random()*2)+1)
          let bool: false | true = false
          if (choice === 1) {
-             bool = this.createBoat(x,y,values[0],'horizontal')}
+             bool = this.createBoat(position,values[0],'horizontal')}
         else if(choice === 2) {
-             bool = this.createBoat(x,y,values[0],'vertical')
+             bool = this.createBoat(position,values[0],'vertical')
         }
 
         if(bool === false) {
@@ -35,19 +34,19 @@ export default class User {
          
             
     }
-    recieveAttack(x:number,y:number ) {
-        return this.gameBoard.recieveAttack(x,y)
+    recieveAttack(position:number) {
+        return this.gameBoard.recieveAttack(position)
     }
     randomAttack(){
         const x = Math.floor((Math.random() * 8)+1)
         const y = Math.floor((Math.random() * 8)+1)
         
     }
-    createBoat(x: number, y: number, length: number, direction: 'vertical' | 'horizontal' ): any {
-    return this.gameBoard.createBoat(x, y, length, direction)
+    createBoat(position:number, length: number, direction: 'vertical' | 'horizontal' ): any {
+    return this.gameBoard.createBoat(position, length, direction)
     }
-    boardCell(x:number, y: number):any {
-        return this.gameBoard.board[x][y]
+    boardCell(position:number):any {
+        return this.gameBoard.board[position]
     }
     board() {
         return this.gameBoard.board

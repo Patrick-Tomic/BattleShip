@@ -103,7 +103,7 @@ export default class GameBoard {
                 if(position+height %10 ===0) {
                     bool = true
                 }
-                if(bool === false && position+height % 10>=9){
+                if(bool === false){
                 if(this.board[position+height] !='') {
                     console.log('not valid')
                     return false
@@ -122,16 +122,18 @@ export default class GameBoard {
              sub = 1
              bool = false
              while(height != length) {
-                if(position+height % 10 === 0) {
-                    bool = true
-                }
-                if(bool ===false && position+height % 10 >= 9) {
+                 
+                if((position+height) % 10 === 0) {
+                        bool = true
+                   }  
+                   
+                if(bool === false) {
                     this.ships[this.ships.length-1].positions.push(position+height)
                     this.board[position+height] = 'O'
-                } if(bool === true) {
+                }else if(bool === true) {
                     this.ships[this.ships.length-1].positions.push(position-sub)
                     this.board[position-sub] = 'O'
-                    position++
+                    sub++
                 }
                 height++
              }
@@ -139,49 +141,63 @@ export default class GameBoard {
         }
         else if(direction === 'vertical') {
             let width = 0
+            let count = 0
             sub = 1
             bool = false
-            if(position %90 >= 0 && position <=9) {
-                while(width != length) {
+           
+            if(position >=90 && position <=99) {
+                while(count != length) {
                     if(this.board[position-width] != ''){
                  console.log('not valid')
                  return false
                 }
                 width+=10
+                count++
             }
                 width = 0
-                while(width != length) {
+                count = 0
+                while(count != length) {
                     this.ships[this.ships.length-1].positions.push(position-width)
                     this.board[position-width] = 'O'
                     width+=10
+                    count++
                 }
                 return true
-            } else if ( position >=9){
-                while(width != length) {
+                
+            } 
+            else if ( position <=9){
+                count = 0
+            width = 0
+                while(count != length) {
                     if(this.board[position+width] != ''){
                         console.log('not valid')
                         return false
                     }
                     width+=10
+                    count++
                 }
                 width = 0
-                while(width != length) {
+                count = 0
+                while(count != length) {
                     this.ships[this.ships.length-1].positions.push(position+width)
                     this.board[position+width] = 'O'
                     width+=10
+                    count++
                 }
-            }else {
+                return true
+            }else if(position >= 10 && position <= 89) {
                 sub = 10
-                while(width != length) {
-                    if(position+width % 90 === 10) {
+                count = 0
+                bool = false
+                while(count != length) {
+                    console.log(position+width)
+                    if(position + width >= 100) {
                         bool = true
                     }
-                        if(bool === false &&this.board[position+width] != '') {
+                        if(bool === false && this.board[position+width] != '') {
                             console.log('not valid')
                             return false
-                        }
-                    }
-                    if(bool = true) {
+                        } else  if(bool === true) {
                         if(this.board[position-sub] != ''){
                             console.log('not valid')
                             return false
@@ -189,12 +205,14 @@ export default class GameBoard {
                         sub+=10
                     }
                     width+=10
+                    count++
                 }
                 width = 0
                 sub = 10
+                count = 0
                 bool = false
-                while(width != length) {
-                    if(position+width % 90 === 10){
+                while(count != length) {
+                    if(position+width >= 100 ){
                         bool = true
                     }
                     if(bool === false){
@@ -206,15 +224,18 @@ export default class GameBoard {
                         this.board[position-sub] = 'O'
                         sub+=10
                     }
-                    width++
+                    width+=10
+                    count++
                 }
                 
-            }
+            
         
-        }
         return true
     }
+}
 
+}
+    }
     recieveAttack(position:number) {
          
              

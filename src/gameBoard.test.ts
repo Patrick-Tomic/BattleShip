@@ -49,13 +49,25 @@ import GameBoard from "./gameBoard";
 import User from "./user";
 import {describe, expect, test} from '@jest/globals'
  
-describe('testing gameboard functions,', () => {
-    const board = new GameBoard()
+ describe('testing gameboard functions,', () => {
+    const board = new GameBoard() 
+    test('horizontal functions for createBoat', () => {
+        board.createBoat(68,5,'horizontal')
+        expect(board.board[67]).toBe('O')
+        expect(board.board[66]).toBe('O')
+    })
+    test('testing vertical conditional statments for createBoat function', () =>{
+        board.createBoat(99,2,'vertical')
+        expect(board.board[89]).toBe('O')
+        board.createBoat(81,3,'vertical')
+        expect(board.board[71]).toBe('O')
+    })
+ })
    /*  test('createBoat function horizontal' ,() => {
     
         board.createBoat(2,9,3,'horizontal')
         expect(board.createBoat(2,8,5,'horizontal')).toBe(console.log('not valid'))
-        expect(board.board[2][9]).toBe('O')
+ /*        expect(board.board[2][9]).toBe('O')
         expect(board.board[2][7]).toBe('O')
         expect(board.board[2][8]).toBe('O')
 
@@ -75,7 +87,7 @@ describe('testing gameboard functions,', () => {
 
          
     }) */
-    test('vertical functions', ()=>{
+ /*    test('vertical functions', ()=>{
         board.createBoat(0,0,5 ,'vertical')
         expect(board.board[0][0]).toBe('O')
         expect(board.board[1][0]).toBe('O')
@@ -83,4 +95,4 @@ describe('testing gameboard functions,', () => {
         expect(board.board[3][0]).toBe('O')
         expect(board.board[4][0]).toBe('O')
     }) 
-})
+}) */ 
