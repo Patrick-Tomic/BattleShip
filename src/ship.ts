@@ -12,7 +12,9 @@ export default class Ship{
         this.positions = []
     }
     hit() {
+        console.log('hit')
         return this.hits++
+
     }
 
     isSunk() {

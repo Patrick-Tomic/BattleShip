@@ -27,9 +27,9 @@ for(let i = 0; i < computer.board().length; i++) {
    
         const div = document.createElement('div')
         div.classList.add('compCell')
-         if(computer.boardCell(i) != '') {
-            div.style.backgroundColor = 'teal'  
+         if(computer.boardCell(i) != '') { 
             div.classList.add('boat')
+            div.id = `${i}`
          
      }      
          document.querySelector('.computer')?.appendChild(div)
@@ -37,10 +37,25 @@ for(let i = 0; i < computer.board().length; i++) {
      
 }
 
-let count = 0
-while(count < 5) {
-    console.log('player ' + player.ships()[count].positions)
-    console.log('computer ' + computer.ships()[count].positions)
-    count++
-}
+const compCells = document.querySelectorAll('.compCell')
+compCells.forEach((cell) => {
+    cell.addEventListener('click', () => {
+        if(cell.className === 'compCell boat') {
+             const position = parseInt(cell.id)
+             let count = 0
+             while(count <= 5) {
+                for(let i = 0; i < computer.ships()[count].positions.length; i++) {
+                   if(position === computer.ships()[count].positions[i]){
+                    cell.setAttribute('style', 'background-color:yellow;')
+                    computer.ships()[count].hit()
+                    computer.ships()[count].isSunk()
+                   }
+                } 
+                count++
+            }
+        }
+    })
+})
+ 
+ 
  
