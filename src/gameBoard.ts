@@ -259,7 +259,7 @@ export default class GameBoard {
             console.log('miss')
         this.missedShot[position] = 'miss'
         this.board[position] = 'X'
-       
+
         return
     }
     shipsSunk() {
