@@ -41,69 +41,95 @@ for(let i = 0; i < computer.board().length; i++) {
     
      
 }
- 
 
-function Game(user: User, computer: User, turn: 1 | 2) {
-    if(user.shipsSunk() === true) {
+
+function Game(player: User, computer: User, turn: 1 | 2) {
+    if(player.shipsSunk() === true) {
         console.log(computer.name+' wins')
         return
     } else if(computer.shipsSunk() === true) {
-        console.log(user.name +' wins')
+        console.log(player.name +' wins')
         return
     }
-  
+    const playerPosition = player.randomAttack()
     if(turn ===1){
-    const compCells = document.querySelectorAll('.compCells')
-    compCells.forEach((cell) => {
-        const position = parseInt(cell.id)
-        let count = 0
-        console.log('heard')
-      
-      cell.addEventListener('click', () => {
-          console.log('wahoo')
-            if(computer.board()[position] === 'M' || 'H'){
-                alert('position already hit<br> try again')
-                Game(user,computer,turn)
-            }
-            let bool = false
-                while(computer.ships().length != count) {
-                    const ship: Ship = computer.ships()[count]
-                    const length: number = ship.positions.length
-                    for(let i = 0; i < length; i++) {
-                        if(position === ship.positions[i]) {
-                             
-                            cell.setAttribute('style', 'background-color:red;')
-                            ship.hit()
-                            ship.isSunk()
-                            computer.board()[position] = 'H'
-                            bool = true
-                        }
-                    }
-                    if(bool === true) {
-                        Game(user, computer,2)
-                    }
-                    count++
-                }
-                if(bool === false){
-                     computer.board()[position] = 'M'
-                     cell.setAttribute('style', 'background-color:blue')    
-                     Game(user, computer,2)                
-                    }
-           })
-        
-        
-    }) 
-
-}else if(turn === 2) {
-    const playerCells = document.querySelectorAll('.playerCell')
-    playerCells.forEach((cell) => {
-        const position = player.randomAttack()
-        if(parseInt(cell.id )=== position){
+        const compCells = document.querySelectorAll('.compCell')
+        let redo = false
+        for(let i = 0; i < compCells.length; i++) {
+     
+        const cell = compCells[i]
+            const position = parseInt(cell.id)
             let count = 0
+        let bool = false
+        cell.addEventListener('click', () => {
+            console.log(position)
+            console.log('wahoo')
+            console.log(computer.board())
+               if(computer.board()[position] === 'M' ||computer.board()[position] === 'H'){
+                  alert('position already hit<br> try again')
+                  redo = true
+                  return
+                  
+                   
+              }
+               
+                  while(computer.ships().length != count) {
+                      const ship: Ship = computer.ships()[count]
+                      const length: number = ship.positions.length
+                      for(let i = 0; i < length; i++) {
+                          if(position === ship.positions[i]) {
+                               
+                              cell.setAttribute('style', 'background-color:red;')
+                              ship.hit()
+                              ship.isSunk()
+                              computer.board()[position] = 'H'
+                              bool = true
+                          }
+                      }
+                      if(bool === true) {
+                          return
+                      }
+                      count++
+                  }
+                  if(bool === false){
+                       computer.board()[position] = 'M'
+                       cell.setAttribute('style', 'background-color:blue')    
+                       return           
+                      } 
+          
+                    })
+        
+    }
+    if(redo) {
+        console.log('redone')
+        Game(player,computer,1)
+    }
+   else{
+   return
+   }
+    }
+ /* else if(turn === 2) {
+    const playerCells = document.querySelectorAll('.playerCell')
+   
+   
+    console.log(playerPosition)
+     playerCells.forEach((cell) => {
+       if(playerPosition === parseInt(cell.id)) {
+        console.log(true)
+        Game(player,computer,1)
+        return
+       }
+       else{
+        console.log(playerPosition)
+       }
+      
+        console.log(position)
+        if(parseInt(cell.id )=== position){
+             let count = 0
             if(player.board()[position] === 'M' || 'H') {
-                Game(user,computer,turn)
+                Game(player,computer,turn)
+                return
             }
-            let bool = false
             while(player.ships().length != count) {
                 const ship = player.ships()[count]
                 const length = ship.positions.length
@@ -113,37 +139,33 @@ function Game(user: User, computer: User, turn: 1 | 2) {
                         cell.setAttribute('style', 'background-color:red;')
                         ship.hit()
                         ship.isSunk()
-                        bool = true
+                        Game(player,computer,1)
+                        return
                       
+                        
                     }
+                    
                 }
-                if(bool === true){ 
-                    Game(user,computer,1)
-                }
+                count++ 
+            
             }
-            if(bool === false) {
-                player.board()[position] = 'M'
-                cell.setAttribute('style', 'background-color:blue')
-                Game(user, computer, 1)
-            }
+             
+        } else {
+            player.board()[position] = 'M'
+            cell.setAttribute('style', 'background-color:blue')
+            Game(player, computer, 1)
+           
+            return
         }
-     
+    
    
-    })
+    }) 
 
-   }
-   
+}
+   */  
 }
 
-const start = document.querySelector('.startBtn')
-start?.addEventListener('click', () => {
-    console.log('begin')
-    Game(player, computer, 1)
-})
-            
-               
-       
-
+Game(player, computer,1)
  
  
  
