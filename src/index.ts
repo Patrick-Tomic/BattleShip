@@ -41,6 +41,10 @@ for(let i = 0; i < computer.board().length; i++) {
     
      
 }
+ 
+    async function clickCell(cell:any) {
+        return new Promise<void>(resolve =>  cell.onclick = () => cell.id);
+      }
 
 
 function Game(player: User, computer: User, turn: 1 | 2) {
@@ -51,39 +55,39 @@ function Game(player: User, computer: User, turn: 1 | 2) {
         console.log(player.name +' wins')
         return
     }
-    const playerPosition = player.randomAttack()
+   
     if(turn ===1){
         const compCells = document.querySelectorAll('.compCell')
         let redo = false
-        for(let i = 0; i < compCells.length; i++) {
-     
-        const cell = compCells[i]
-            const position = parseInt(cell.id)
-            let count = 0
+        let position:any 
+        let Cell: any
+        compCells.forEach((cell) =>{
+          cell.addEventListener('click', ()=>{
+            position = parseInt(cell.id)
+            
+            
+            if(computer.board()[position] ==='M' || computer.board()[position] === 'H'){
+                Game(player,computer,1)
+            }
+          })
+        })
+        
+         
+        
+        position = parseInt(position)
+        console.log(position)
+        let count = 0
         let bool = false
-        cell.addEventListener('click', () => {
-            console.log(position)
-            console.log('wahoo')
-            console.log(computer.board())
-               if(computer.board()[position] === 'M' ||computer.board()[position] === 'H'){
-                  alert('position already hit<br> try again')
-                  redo = true
-                  return
-                  
-                   
-              }
-               
-                  while(computer.ships().length != count) {
-                      const ship: Ship = computer.ships()[count]
-                      const length: number = ship.positions.length
-                      for(let i = 0; i < length; i++) {
-                          if(position === ship.positions[i]) {
-                               
-                              cell.setAttribute('style', 'background-color:red;')
-                              ship.hit()
-                              ship.isSunk()
-                              computer.board()[position] = 'H'
-                              bool = true
+           while(computer.ships().length != count) {
+              const ship: Ship = computer.ships()[count]
+              const length: number = ship.positions.length
+                  for(let i = 0; i < length; i++) {
+                       if(position === ship.positions[i]) {                            
+                        Cell.setAttribute('style', 'background-color:red;')
+                            ship.hit()
+                            ship.isSunk()
+                            computer.board()[position] = 'H'
+                            bool = true
                           }
                       }
                       if(bool === true) {
@@ -93,76 +97,51 @@ function Game(player: User, computer: User, turn: 1 | 2) {
                   }
                   if(bool === false){
                        computer.board()[position] = 'M'
-                       cell.setAttribute('style', 'background-color:blue')    
-                       return           
+                       Cell.setAttribute('style', 'background-color:blue;')     
                       } 
-          
-                    })
-        
-    }
-    if(redo) {
-        console.log('redone')
-        Game(player,computer,1)
-    }
-   else{
-   return
-   }
-    }
- /* else if(turn === 2) {
-    const playerCells = document.querySelectorAll('.playerCell')
-   
-   
-    console.log(playerPosition)
-     playerCells.forEach((cell) => {
-       if(playerPosition === parseInt(cell.id)) {
-        console.log(true)
-        Game(player,computer,1)
-        return
-       }
-       else{
-        console.log(playerPosition)
-       }
-      
-        console.log(position)
-        if(parseInt(cell.id )=== position){
-             let count = 0
-            if(player.board()[position] === 'M' || 'H') {
-                Game(player,computer,turn)
-                return
-            }
-            while(player.ships().length != count) {
-                const ship = player.ships()[count]
-                const length = ship.positions.length
-                for(let i = 0; i < length; i++){
-                    if(position === ship.positions[i]) {
-                        player.board()[position] = 'H'
-                        cell.setAttribute('style', 'background-color:red;')
-                        ship.hit()
-                        ship.isSunk()
-                        Game(player,computer,1)
-                        return
-                      
-                        
-                    }
                     
-                }
-                count++ 
-            
+
+    
+    
+   Game(player,computer,1)
+   }
+  else if(turn === 2) {
+    const playerCells = document.querySelectorAll('.playerCell')
+    const position = player.randomAttack()
+    const cell = playerCells[position]
+   let count = 0
+   if(player.board()[position] === 'M' || player.board()[position] === 'H') {
+    Game(player,computer,2)
+   } else {
+    while(player.ships().length != count) {
+        const ship = player.ships()[count]
+        const length = ship.positions.length
+        for(let i = 0; i < length; i++){
+            if(ship.positions[i] === position) {
+                cell.setAttribute('style', 'background-color:red;')
+                ship.hit()
+                ship.isSunk()
+                player.board()[position] = 'H'
             }
-             
-        } else {
-            player.board()[position] = 'M'
-            cell.setAttribute('style', 'background-color:blue')
-            Game(player, computer, 1)
-           
+        }
+        if(player.board()[position] === 'H') {
             return
         }
+        count++
+    }
+    if(player.board()[position] != 'H'){
+        player.board()[position] = 'M'
+        cell.setAttribute('style', 'background-color:blue;')
+    }
+    Game(player,computer,1)
+   }
+   
     
    
-    }) 
+    
 
 }
-   */  
+   
 }
 
 Game(player, computer,1)
