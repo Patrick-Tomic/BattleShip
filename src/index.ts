@@ -42,8 +42,8 @@ for(let i = 0; i < computer.board().length; i++) {
      
 }
  
-Game(player,computer)
-function Game(user: User, computer: User, turn: 1 | 2 = 1) {
+
+function Game(user: User, computer: User, turn: 1 | 2) {
     if(user.shipsSunk() === true) {
         console.log(computer.name+' wins')
         return
@@ -51,12 +51,16 @@ function Game(user: User, computer: User, turn: 1 | 2 = 1) {
         console.log(user.name +' wins')
         return
     }
-   if(turn === 1) {
+  
+    if(turn ===1){
     const compCells = document.querySelectorAll('.compCells')
     compCells.forEach((cell) => {
         const position = parseInt(cell.id)
         let count = 0
-      cell.addEventListener('click', () => {    
+        console.log('heard')
+      
+      cell.addEventListener('click', () => {
+          console.log('wahoo')
             if(computer.board()[position] === 'M' || 'H'){
                 alert('position already hit<br> try again')
                 Game(user,computer,turn)
@@ -67,7 +71,8 @@ function Game(user: User, computer: User, turn: 1 | 2 = 1) {
                     const length: number = ship.positions.length
                     for(let i = 0; i < length; i++) {
                         if(position === ship.positions[i]) {
-                            cell.innerHTML = 'X'
+                             
+                            cell.setAttribute('style', 'background-color:red;')
                             ship.hit()
                             ship.isSunk()
                             computer.board()[position] = 'H'
@@ -75,17 +80,66 @@ function Game(user: User, computer: User, turn: 1 | 2 = 1) {
                         }
                     }
                     if(bool === true) {
-                        break
+                        Game(user, computer,2)
                     }
                     count++
                 }
-                if(bool === false) computer.board()[position] = 'M'
-            })
+                if(bool === false){
+                     computer.board()[position] = 'M'
+                     cell.setAttribute('style', 'background-color:blue')    
+                     Game(user, computer,2)                
+                    }
+           })
+        
+        
     }) 
+
+}else if(turn === 2) {
+    const playerCells = document.querySelectorAll('.playerCell')
+    playerCells.forEach((cell) => {
+        const position = player.randomAttack()
+        if(parseInt(cell.id )=== position){
+            let count = 0
+            if(player.board()[position] === 'M' || 'H') {
+                Game(user,computer,turn)
+            }
+            let bool = false
+            while(player.ships().length != count) {
+                const ship = player.ships()[count]
+                const length = ship.positions.length
+                for(let i = 0; i < length; i++){
+                    if(position === ship.positions[i]) {
+                        player.board()[position] = 'H'
+                        cell.setAttribute('style', 'background-color:red;')
+                        ship.hit()
+                        ship.isSunk()
+                        bool = true
+                      
+                    }
+                }
+                if(bool === true){ 
+                    Game(user,computer,1)
+                }
+            }
+            if(bool === false) {
+                player.board()[position] = 'M'
+                cell.setAttribute('style', 'background-color:blue')
+                Game(user, computer, 1)
+            }
+        }
+     
+   
+    })
+
    }
    
 }
- 
+
+const start = document.querySelector('.startBtn')
+start?.addEventListener('click', () => {
+    console.log('begin')
+    Game(player, computer, 1)
+})
             
                
        

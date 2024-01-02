@@ -35,6 +35,7 @@ export default class User {
     }
     randomAttack(){
        const position = Math.floor((Math.random()*99)+1)
+       return position
         
     }
     createBoat(position:number, length: number, direction: 'vertical' | 'horizontal' ): any {

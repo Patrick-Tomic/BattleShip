@@ -242,9 +242,9 @@ export default class GameBoard {
          
              
             if (this.board[position] == 'O') {
-                this.board[position] = 'X'
+                this.board[position] = 'H'
               for(let i = 0; i < this.ships.length; i++) {
-                 for(let j = 0; j< this.ships[i].positions.length-1; j++){
+                 for(let j = 0; j< this.ships[i].positions.length; j++){
                     
                         if(this.ships[i].positions[j] === position) {
                             console.log('hit')
