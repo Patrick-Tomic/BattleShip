@@ -64,46 +64,38 @@ function Game(player: User, computer: User, turn: 1 | 2) {
         compCells.forEach((cell) =>{
           cell.addEventListener('click', ()=>{
             position = parseInt(cell.id)
+            if(computer.board()[position] === 'M' ||computer.board()[position] === 'H'){
+           Game(player,computer,1)
+            }else{
+                console.log('up')
+                let count = 0
+                let bool = false
+                   while(computer.ships().length != count) {
+                      const ship: Ship = computer.ships()[count]
+                      const length: number = ship.positions.length
+                          for(let i = 0; i < length; i++) {
+                               if(position === ship.positions[i]) {                            
+                                cell.setAttribute('style', 'background-color:red;')
+                                    ship.hit()
+                                    ship.isSunk()
+                                    computer.board()[position] = 'H'
+                                    bool = true
+                                  }
+                              }
+                              if(bool === true) {
+                                  return
+                              }
+                              count++
+                          }
+                          if(bool === false){
+                               computer.board()[position] = 'M'
+                               cell.setAttribute('style', 'background-color:blue;')     
+                              } 
             
-            
-            if(computer.board()[position] ==='M' || computer.board()[position] === 'H'){
-                Game(player,computer,1)
+           Game(player,computer,2)
             }
           })
         })
-        
-         
-        
-        position = parseInt(position)
-        console.log(position)
-        let count = 0
-        let bool = false
-           while(computer.ships().length != count) {
-              const ship: Ship = computer.ships()[count]
-              const length: number = ship.positions.length
-                  for(let i = 0; i < length; i++) {
-                       if(position === ship.positions[i]) {                            
-                        Cell.setAttribute('style', 'background-color:red;')
-                            ship.hit()
-                            ship.isSunk()
-                            computer.board()[position] = 'H'
-                            bool = true
-                          }
-                      }
-                      if(bool === true) {
-                          return
-                      }
-                      count++
-                  }
-                  if(bool === false){
-                       computer.board()[position] = 'M'
-                       Cell.setAttribute('style', 'background-color:blue;')     
-                      } 
-                    
-
-    
-    
-   Game(player,computer,1)
    }
   else if(turn === 2) {
     const playerCells = document.querySelectorAll('.playerCell')
