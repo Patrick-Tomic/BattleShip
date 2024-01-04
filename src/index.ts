@@ -33,7 +33,7 @@ for(let i = 0; i < computer.board().length; i++) {
         div.id = `${i}`
          if(computer.boardCell(i) != '') { 
             div.classList.add('boat')
-            div.style.backgroundColor = 'teal'
+            
             
          
      }      
@@ -69,6 +69,7 @@ let flag = true
                                   }
                               }
                               if(bool === true) {
+                               
                                    return Game(player,computer,2 )
                               }
                               count++
@@ -80,6 +81,7 @@ let flag = true
                               
                             
           }
+        
           return Game(player,computer,2 )
         }
         cell.addEventListener('click',playerRound)
@@ -89,12 +91,13 @@ let flag = true
 function Game(player: User, computer: User, turn: 1 | 2 ) {
      
     if(player.shipsSunk() === true) {
-         
+        console.log(computer.name +' wins')
+       flag = false
         return 
     } 
      if(computer.shipsSunk() === true) {
         console.log(player.name +' wins')
-      
+     flag = false
        return
     }
     if(turn === 2) {
@@ -126,10 +129,10 @@ function Game(player: User, computer: User, turn: 1 | 2 ) {
         cell.setAttribute('style', 'background-color:blue;')
     }
    
-    return 
 }
    
 }
- 
+
+return 
 }
     
