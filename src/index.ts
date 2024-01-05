@@ -59,26 +59,7 @@ let flag = true
                    while(computer.ships().length != count) {
                       const ship: Ship = computer.ships()[count]
                       const length: number = ship.positions.length
-                          for(let i = 0; i < length; i++) {
-                               if(position === ship.positions[i]) {                            
-                                cell.setAttribute('style', 'background-color:red;')
-                                    ship.hit()
-                                    ship.isSunk()
-                                    computer.board()[position] = 'H'
-                                    bool = true
-                                  }
-                              }
-                              if(bool === true) {
-                               
-                                   return Game(player,computer,2 )
-                              }
-                              count++
-                          }
-                          if(bool === false){
-                               computer.board()[position] = 'M'
-                               cell.setAttribute('style', 'background-color:blue;')     
-                              } 
-                              
+                   
                             
           }
         
