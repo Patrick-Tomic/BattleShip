@@ -18,20 +18,6 @@ for(let i = 0; i < player.board().length; i++) {
         if ( player.boardCell(i) != '') {
             div.style.backgroundColor = 'teal'      
                  
-        } else {
-            div.innerHTML = ''
-
-        }
-         document.querySelector('.player')?.appendChild(div)
-    }
-
-computer.randomCreateBoats()
-for(let i = 0; i < computer.board().length; i++) {
-   
-        const div = document.createElement('div')
-        div.classList.add('compCell')
-        div.id = `${i}`
-         if(computer.boardCell(i) != '') { 
             div.classList.add('boat')
             
             
