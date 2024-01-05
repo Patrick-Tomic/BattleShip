@@ -238,30 +238,7 @@ export default class GameBoard {
 
 }
     }
-    recieveAttack(position:number) {
-         
-             
-            if (this.board[position] == 'O') {
-                this.board[position] = 'H'
-              for(let i = 0; i < this.ships.length; i++) {
-                 for(let j = 0; j< this.ships[i].positions.length; j++){
-                    
-                        if(this.ships[i].positions[j] === position) {
-                            console.log('hit')
-                            this.ships[i].hit()
-                            this.ships[i].isSunk()
-                            return
-                        }
-                    
-                 }
-              }
-            }
-            console.log('miss')
-        this.missedShot[position] = 'miss'
-        this.board[position] = 'X'
-
-        return
-    }
+    
     shipsSunk() {
         let isSunk = true
         const boats = this.ships
