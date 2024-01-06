@@ -40,6 +40,8 @@ main{
         .title{
             font-family: 'Anton', system-ui;
             font-size: 40px;
+           
+      
         }
         margin-top: 3vh;
         align-self: center;
@@ -47,8 +49,9 @@ main{
         
         display: flex;
         justify-content: center;
-        width: 20vw;
+        width: 30vw;
         .startBtn{
+            display: none;
             font-family: 'Anton', system-ui;
             cursor: pointer;;
             width: 10vw;
