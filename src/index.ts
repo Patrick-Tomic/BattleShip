@@ -69,12 +69,12 @@ playerCells.forEach(cell => {
     let Ycells: any = []
     cell.addEventListener('mouseover',()=>{
         if(!array.length){
-            console.log(player.board())
+             
              axis.setAttribute('style','display:none')
             start.setAttribute('style', 'display:block')
             return
         }
-        console.log(array[0])
+         
         if(cell.className === 'playerCell boat'){
           
             cell.setAttribute('style','background-color:maroon; cursor:not-allowed')
@@ -82,6 +82,7 @@ playerCells.forEach(cell => {
 }
         if(direction === 'vertical'){
             if(Ypositions.length === 0 || Ypositions.length > array[0]){
+                 
                 Ypositions = []
                 placeBoats(cell, Ypositions, position, array[0])  
                 Ycells = []
@@ -90,7 +91,7 @@ playerCells.forEach(cell => {
             for(let i = 0; i < Ypositions.length; i++){
                 const cells:any = document.getElementById(Ypositions[i])
                 if(cells.className === 'playerCell boat'){
-                    console.log('no valid')
+                     
                 const Cell:any = document.getElementById(Ypositions[0])
                 Cell.setAttribute('style','background-color:maroon; cursor:not-allowed')
                 return
@@ -113,7 +114,7 @@ playerCells.forEach(cell => {
         for(let i = 0; i < Xpositions.length; i++){
             const cell:any = document.getElementById(Xpositions[i])
             if(cell.className === 'playerCell boat'){
-                console.log('no valid')
+                
             const Cell:any = document.getElementById(Xpositions[0])
             Cell.setAttribute('style','background-color:maroon; cursor:not-allowed')
             return
@@ -177,7 +178,7 @@ playerCells.forEach(cell => {
                 array.shift()         
                 return
             }else if(direction === 'horizontal'){
-                console.log(Xcells.length)
+                
                 for(let i = 0; i < Xcells.length; i++){
                     
                     if(Xcells[i].className === 'playerCell boat'){
@@ -197,20 +198,24 @@ playerCells.forEach(cell => {
     })
 })
  
-          
+        
  
  
 
 
 start.addEventListener('click', () => {
+    const ships = player.ships()
+    ships.forEach((ship) => console.log(typeof(ship.positions[0])))
     menuBar?.removeChild(start)
     const compCells = document.querySelectorAll('.compCell')
     const title = document.createElement('h2')
     title.classList.add('title')
+    title.innerHTML = "Begin!"
     menuBar?.appendChild(title)
 let position:any 
 compCells.forEach((cell) =>{        
     cell.addEventListener('click',() => {
+        title.innerHTML = ''
         if(player.flag === false) {
             console.log(computer.name +' wins')
            
@@ -226,6 +231,7 @@ compCells.forEach((cell) =>{
     })
 })
 })
+
 /* cell.setAttribute('style', 'background-color:#36454F') */
 function placeBoats(cell:any, positions:any[], position:any, length:number){
 
