@@ -5,10 +5,11 @@ export default class User {
     name: string
     flag: boolean = true
     area:any = null
-    chances : string[] = ['left', 'up', 'right', 'down']
+    chances : string[] = ['left', 'right', 'up', 'down']
     vertical: boolean = false
     horizontal: boolean = false
     opposite:boolean = false
+    direction:any = null
     marker:number = 0
     constructor(name: 'Player' | 'Computer'){
         this.name = name
@@ -76,6 +77,7 @@ export default class User {
         }
     }
     randomAttack(player:User, computer:User):any{
+  
         const title:any = document.querySelector('.title')
         if(player.shipsSunk() === false) {
 
@@ -88,28 +90,33 @@ export default class User {
          
            return
         }
+        console.log(this.chances[0])
         let position = 0
         if(this.opposite === false){
              if(this.horizontal === true){
-            if(this.chances[0] === 'left'){
+            if(this.direction === 'left'){
+                 
                 if(this.area %10 ===0){
                     position = this.area+1
                 }else{
                 position = this.area-1
                 }
-            } else if(this.chances[0] ==='right'){
+            } else if(this.direction ==='right'){
+              
                 if(this.area %10 === 9){
                     position = this.area-1
                 } else{
                 position = this.area +1}
             }
         }else if(this.vertical === true){
-            if(this.chances[0] === 'up'){
+            if(this.direction === 'up'){
+               
                 if(this.area >= 0 && this.area <= 9){
                     position = this.area +10
                 }else{
                 position = this.area-10}
-            } else if(this.chances[0] === 'down'){
+            } else if(this.direction === 'down'){
+               
                 if(this.area >= 90 && this.area <= 99){
                     position = this.area -10
                 }else{
@@ -141,19 +148,19 @@ export default class User {
         }
      else{
         position = Math.floor((Math.random() * 99) + 1)    
-        this.marker = position
+     
    } }else if(this.opposite === true){
     if(this.horizontal === true){
-        if(this.chances[0] === 'left'){
+        if(this.direction === 'left'){
             position = this.marker + 1
-        }else if(this.chances[0] === 'right'){
+        }else if(this.direction === 'right'){
             position = this.marker -1
         }
     } else if(this.vertical === true){
-        if(this.chances[0] === 'up'){
-            position = this.marker - 10
-        } else if(this.chances[0] === 'down'){
+        if(this.direction === 'up'){
             position = this.marker + 10
+        } else if(this.direction === 'down'){
+            position = this.marker - 10
         }
     }
      } 
@@ -163,11 +170,13 @@ export default class User {
         const cell = playerCells[position]
        let count = 0
        if(player.board()[position] === 'M' || player.board()[position] === 'H') {
-        if(this.horizontal || this.vertical === true){
-            this.chances.shift()
+        if((this.horizontal === true || this.vertical === true) && this.opposite != true ){
+            this.opposite = true
             return this.randomAttack(player,computer)
+        } else if(this.horizontal === false || this.vertical === false){
+            this.chances.shift()
+            return this.randomAttack(player, computer)
         }
-        return this.randomAttack(player, computer)
        } else {
         while(player.ships().length != count) {
             const ship = player.ships()[count]
@@ -175,7 +184,6 @@ export default class User {
             for(let i = 0; i < length; i++){
                 if(ship.positions[i] === position) {
                     console.log('hit!')
-                    
                     cell.setAttribute('style', 'background-color:#800020;')
                     ship.hit()
                     ship.isSunk(computer)
@@ -184,56 +192,51 @@ export default class User {
                         this.vertical = false
                         this.horizontal = false
                         this.opposite = false
+                        this.direction = null
                         this.chances = ['left', 'up', 'right', 'down']
+                        this.marker = 0
                         return
                     }
-                    player.board()[position] = 'H'
-                    
+                    player.board()[position] = 'H'       
                 }
             }
-          
             if(player.board()[position] === 'H') {
-                console.log('registers hit')
-                if(this.vertical || this.horizontal != true) {
+                if(this.opposite === true){
+                    this.marker = position
+                    return
+                }
+                if(this.vertical != true || this.horizontal != true) {
                     if(this.area != null) {
                         if(this.chances[0] === 'left' || this.chances[0] === 'right'){
                             this.horizontal = true
-                            this.chances = ['left','right']
+                            this.direction = this.chances[0]
                         } else if(this.chances[0] === 'up' || this.chances[0] === 'down'){
                             this.vertical = true
-                            this.chances = ['up', 'down']
+                            this.direction = this.chances[0]
                         }
-                        this.area = position
-                        console.log('area input: '+ this.area+' hit to the '+ this.chances[0])
-                        console.log('horizontal is ' + this.horizontal)
-                        console.log('vertical is '+ this.vertical)
+                        this.area = position         
                         return
                     }  
                 }
-                
-                    this.area = position
-                    console.log('area inputted with '+this.area)
-                    return
-                
+                if(this.area === null) {
+                    this.marker = position
+                }
+                    this.area = position      
+                    return        
         }
         count++
-        
-   
     }
-    if(player.board()[position] != 'H'){
-         
+    if(player.board()[position] != 'H'){         
         player.board()[position] = 'M'
         cell.setAttribute('style', 'background-color:#B69460;')
-        if(this.area === null){
-            console.log('next try')
+        if(this.area === null){       
             return
         }else{
-        if(this.horizontal || this.vertical != true){
-            console.log('not to the '+ this.chances[0])
+        if(this.horizontal != true || this.vertical != true){
             this.chances.shift()
             return
-        } else if(this.horizontal || this.vertical === true){
-            this.opposite = true
+        } else if(this.horizontal === true || this.vertical === true){
+            this.opposite = true    
             return
         }
     }
