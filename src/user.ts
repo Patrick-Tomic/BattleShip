@@ -4,6 +4,11 @@ export default class User {
     gameBoard : GameBoard = new GameBoard
     name: string
     flag: boolean = true
+    area:any = null
+    chances : string[] = ['left', 'up', 'right', 'down']
+    vertical: boolean = false
+    horizontal: boolean = false
+    opposite:boolean = false
     constructor(name: 'Player' | 'Computer'){
         this.name = name
     }
@@ -71,7 +76,7 @@ export default class User {
       
          
     }
-    randomAttack(player:User, computer:User):any{
+    randomAttack(player:User, computer:User, area?:number):any{
         const title:any = document.querySelector('.title')
         if(player.shipsSunk() === false) {
 
@@ -84,7 +89,66 @@ export default class User {
          
            return
         }
-      const position = Math.floor((Math.random() * 99) + 1)
+        let position = 0
+        if(this.opposite != true){
+             if(this.horizontal === true){
+            if(this.chances[0] === 'left'){
+                if(position %10 ===0){
+                    position = player.area+1
+                }else{
+                position = player.area-1
+                }
+            } else if(this.chances[0] ==='right'){
+                if(position %10 === 9){
+                    position = player.area-1
+                } else{
+                position = player.area +1}
+            }
+        }else if(this.vertical === true){
+            if(this.chances[0] === 'up'){
+                if(position >= 0 && position <= 9){
+                    position = player.area +10
+                }else{
+                position = player.area-10}
+            } else if(this.chances[0] === 'down'){
+                if(position >= 90 && position <= 99){
+                    position = player.area -10
+                }else{
+                position = player.area +10}
+            }
+        }else if(player.area != null) {
+            if(this.chances[0] === 'left'){
+                if(position %10 ===0){
+                    position = player.area+1
+                }else{
+                position = player.area-1
+                }
+            }else if(this.chances[0] === 'up'){
+                if(position >= 0 && position <= 9){
+                    position = player.area +10
+                }else{
+                position = player.area-10}
+            }else if(this.chances[0] === 'right'){
+                if(position %10 === 9){
+                    position = player.area-1
+                } else{
+                position = player.area +1}
+            } else if(this.chances[0] ==='down'){
+                if(position >= 90 && position <= 99){
+                    position = player.area -10
+                }else{
+                position = player.area +10}
+            }
+        }
+     else{
+        position = Math.floor((Math.random() * 99) + 1)    
+   } }else if(this.opposite === true){
+    if(this.horizontal === true){
+
+    } else if(this.vertical === true){
+
+    }
+     } 
         const playerCells = document.querySelectorAll('.playerCell')
        
         const cell = playerCells[position]
@@ -100,11 +164,28 @@ export default class User {
                     cell.setAttribute('style', 'background-color:#800020;')
                     ship.hit()
                     ship.isSunk(computer)
+                    if(ship.isSunk(computer) === true){
+                        player.area = null
+                        player.vertical = false
+                        player.horizontal = false
+                        player.opposite = false
+                        this.chances = ['left', 'up', 'right', 'down']
+                    }
                     player.board()[position] = 'H'
+                    
                 }
             }
             if(player.board()[position] === 'H') {
-                return
+                if(this.vertical != true && this.horizontal != true) {
+                    if(player.area != null) {
+                        if(this.chances[0] === 'left' || this.chances[0] === 'right'){
+                            this.horizontal = true
+                        } else if(this.chances[0] === 'up' || this.chances[0] === 'down'){
+                            this.vertical = true
+                        }
+                    }
+                player.area = position
+                return  
             }
             count++
         }
@@ -112,12 +193,17 @@ export default class User {
          
             player.board()[position] = 'M'
             cell.setAttribute('style', 'background-color:#B69460;')
+            if(this.horizontal || this.vertical != true){
+                this.chances.shift()
+            } else if(this.horizontal || this.vertical === true){
+                this.opposite = true
+            }
         }
       
     }
     
-   
-    if(player.shipsSunk() === false) {
+  
+     if(player.shipsSunk() === false) {
         console.log(computer.name +' wins')
        
         return 
@@ -125,10 +211,11 @@ export default class User {
      if( computer.shipsSunk() === false) {
         console.log(player.name +' wins')
      
-       return
-    }
+       return  
+    } 
         
     }
+}
     createBoat(position:number, length: number, direction: 'vertical' | 'horizontal' ): any {
     return this.gameBoard.createBoat(position, length, direction)
     }
