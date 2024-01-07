@@ -5,19 +5,19 @@ import User from './user'
 const player = new User('Player')
 const computer = new User('Computer')
     
-/*    
- player.createBoat(56,5,'horizontal')
+  
+/*  player.createBoat(56,5,'horizontal')
  player.createBoat(71,4,'vertical')
  player.createBoat(33,2,'horizontal')
  player.createBoat(99,3,'vertical')
- player.createBoat(74,3,'horizontal') */
-
+ player.createBoat(74,3,'horizontal') 
+ */
 for(let i = 0; i < player.board().length; i++) {  
     const div = document.createElement('div')
     div.classList.add('playerCell')
     div.id = `${i}`
     if ( player.boardCell(i) != '') {
-         
+         div.setAttribute('style','background-color:maroon')
     } else {
         div.innerHTML = ''
     }
@@ -63,55 +63,121 @@ playerCells.forEach(cell => {
     let Ycells: any = []
     cell.addEventListener('mouseover',()=>{
         if(cell.className === 'playerCell boat'){
+          
             cell.setAttribute('style','background-color:maroon; cursor:not-allowed')
             return
-        }
+}
         if(direction === 'vertical'){
-         if(Ypositions.length > 0){
+            if(Ypositions.length === 0){
+                placeBoats(cell, Ypositions, position)  
+            }  
+            for(let i = 0; i < Ypositions.length; i++){
+                const cell:any = document.getElementById(Ypositions[i])
+                if(cell.className === 'playerCell boat'){
+                const Cell:any = document.getElementById(Ypositions[0])
+                Cell.setAttribute('style','background-color:maroon; cursor:not-allowed')
+                return
+                }
+            }
             Ypositions.forEach((position: string) =>{
                 const cell:any = document.getElementById(position)
-                cell.setAttribute('style', 'background-color:#36454F')
-            }) 
-         }else{ 
-            placeBoats(cell, Ypositions, position)
-            Ypositions.forEach((position: string) =>{
-                const cell:any = document.getElementById(position)
+                Ycells.push(cell)
                 cell.setAttribute('style', 'background-color:#36454F')
             })
            
-         }
+         
         }
         else if(direction === 'horizontal'){
-     if(Xpositions.length > 0){
+          if(Xpositions.length === 0){
+            placeBoats(cell, Xpositions, position)  
+        }  
+        for(let i = 0; i < Xpositions.length; i++){
+            
+            const cell:any = document.getElementById(Xpositions[i])
+            console.log(cell)
+            if(cell.className === 'playerCell boat'){
+                console.log('no valid')
+            const Cell:any = document.getElementById(Xpositions[0])
+            Cell.setAttribute('style','background-color:maroon; cursor:not-allowed')
+            return
+            }
+        }
         Xpositions.forEach((position: string) =>{
             const cell:any = document.getElementById(position)
-            cell.setAttribute('style', 'background-color:#36454F')
-        })    
-     }else{
-        placeBoats(cell, Xpositions, position)  
-        Xpositions.forEach((position: string) =>{
-            const cell:any = document.getElementById(position)
+            Xcells.push(cell)
             cell.setAttribute('style', 'background-color:#36454F')
         })    
         
      }
-    }
+    
     })
     
     cell.addEventListener('mouseleave',() =>{
-         
-        
+        if(cell.className === 'playerCell boat'){
+            cell.setAttribute('style', 'background-color:#36454F')
+            return
+        }
         if(direction === 'vertical'){
             Ypositions.forEach((position: string) =>{
                 const cell:any = document.getElementById(position)
+                if(cell.className === 'playerCell boat'){
+                    cell.setAttribute('style' ,'background-color:#36454F')
+                    } else{
                 cell.setAttribute('style', 'background-color:#6082B6')
+                }
             })
         }
         else if(direction === 'horizontal'){
             Xpositions.forEach((position: string) =>{
                 const cell:any = document.getElementById(position)
+                if(cell.className === 'playerCell boat'){
+                    cell.setAttribute('style' ,'background-color:#36454F')
+                    } else{
                 cell.setAttribute('style', 'background-color:#6082B6')
+                }
             })
+        }
+    })
+    cell.addEventListener('click',() =>{
+       if(direction === 'vertical'){   
+            for(let i = 0; i < Ycells.length; i++){
+                if(Ycells[i].className === 'playerCell boat'){
+                    alert('position taken')
+                    return
+                }
+            }       
+                Ycells.forEach((cell:any) =>{
+                    cell.classList.add('boat')
+                    cell.setAttribute('style', 'background-color:#36454F')
+                })
+                player.createBoat(Ypositions[0], array[0], 'horizontal')
+                Xcells = []
+                Ycells = []
+                Ypositions = []
+                Xpositions = []
+                array.shift()
+                return
+            }else if(direction === 'horizontal'){
+                console.log(Xcells.length)
+                for(let i = 0; i < Xcells.length; i++){
+                    
+                    if(Xcells[i].className === 'playerCell boat'){
+                        alert('position taken')
+                        return
+                    }
+                }   
+                Xcells.forEach((cell:any) =>{
+                    cell.classList.add('boat')
+                    cell.setAttribute('style', 'background-color:#36454F')
+                })
+                player.createBoat(Ypositions[0], array[0], 'vertical')
+                Xcells = []
+                Ycells = []
+                Ypositions = []
+                Xpositions = []
+                array.shift()
+                return
+            
         }
     })
 })
@@ -153,6 +219,7 @@ function placeBoats(cell:any, positions:any[], position:any){
     let bool = false   
     if(direction === 'horizontal') {
         if(position %10 === 9){
+            return false
             while(count != array[0]){
                 if(player.board()[position - count ] != ''){
                   return false
@@ -182,6 +249,8 @@ function placeBoats(cell:any, positions:any[], position:any){
         }else{
             while(count != array[0]){
                 if(position+count %10 === 0){
+                    
+                    return false
                     bool = true
                 }
                 if(bool === false){
@@ -189,12 +258,12 @@ function placeBoats(cell:any, positions:any[], position:any){
                         return false
                     }
                 }
-                if(bool === true){
+               /*  if(bool === true){
                     if(player.board()[position -sub] != ''){
                         return false
                     }
                     sub++
-                }
+                } */
                 count++
             }
             count = 0
