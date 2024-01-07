@@ -38,42 +38,59 @@ for(let i = 0; i < computer.board().length; i++) {
 let playerCount = 1
  
 const axis:any = document.querySelector('.axis')
+
 let direction = axis.id
 axis.addEventListener('click',() =>{
     if(axis.id === 'horizontal'){
         axis.id = 'vertical'
         axis.innerHTML = 'Y-Axis'
         direction = axis.id
+        
         return
     } else if(axis.id === 'vertical'){
         axis.id = 'horizontal'
         axis.innerHTML = 'X-Axis'
         direction = axis.id
+      
         return
     }
 })
-let array:any = [5,4,3,3,2]
+const menuBar:any = document.querySelector('.menuBar')
+ 
+const start:any = document.querySelector('.startBtn')
 const playerCells = document.querySelectorAll('.playerCell')
-
+let array:any = [5,4,3,3,2]
 playerCells.forEach(cell => {
-    let Xpositions:any = []
-    let Ypositions:any = []
+   
+    let Xpositions:any = [] //horizontal
+    let Ypositions:any = [] //vertical
     let position = parseInt(cell.id)
     let Xcells:any = []
     let Ycells: any = []
     cell.addEventListener('mouseover',()=>{
+        if(!array.length){
+            console.log(player.board())
+             axis.setAttribute('style','display:none')
+            start.setAttribute('style', 'display:block')
+            return
+        }
+        console.log(array[0])
         if(cell.className === 'playerCell boat'){
           
             cell.setAttribute('style','background-color:maroon; cursor:not-allowed')
             return
 }
         if(direction === 'vertical'){
-            if(Ypositions.length === 0){
-                placeBoats(cell, Ypositions, position)  
+            if(Ypositions.length === 0 || Ypositions.length > array[0]){
+                Ypositions = []
+                placeBoats(cell, Ypositions, position, array[0])  
+                Ycells = []
+                 
             }  
             for(let i = 0; i < Ypositions.length; i++){
-                const cell:any = document.getElementById(Ypositions[i])
-                if(cell.className === 'playerCell boat'){
+                const cells:any = document.getElementById(Ypositions[i])
+                if(cells.className === 'playerCell boat'){
+                    console.log('no valid')
                 const Cell:any = document.getElementById(Ypositions[0])
                 Cell.setAttribute('style','background-color:maroon; cursor:not-allowed')
                 return
@@ -88,31 +105,34 @@ playerCells.forEach(cell => {
          
         }
         else if(direction === 'horizontal'){
-          if(Xpositions.length === 0){
-            placeBoats(cell, Xpositions, position)  
+          if(Xpositions.length === 0 || Xpositions.length > array[0]){
+            Xpositions = []
+            placeBoats(cell, Xpositions, position, array[0]) 
+           Xcells = []
         }  
         for(let i = 0; i < Xpositions.length; i++){
-            
             const cell:any = document.getElementById(Xpositions[i])
-            console.log(cell)
             if(cell.className === 'playerCell boat'){
                 console.log('no valid')
             const Cell:any = document.getElementById(Xpositions[0])
             Cell.setAttribute('style','background-color:maroon; cursor:not-allowed')
             return
             }
-        }
+        } 
         Xpositions.forEach((position: string) =>{
             const cell:any = document.getElementById(position)
             Xcells.push(cell)
             cell.setAttribute('style', 'background-color:#36454F')
         })    
-        
+    
      }
     
     })
     
     cell.addEventListener('mouseleave',() =>{
+        if(!array.length){
+            return
+        }
         if(cell.className === 'playerCell boat'){
             cell.setAttribute('style', 'background-color:#36454F')
             return
@@ -139,6 +159,9 @@ playerCells.forEach(cell => {
         }
     })
     cell.addEventListener('click',() =>{
+        if(!array.length){
+            return
+        }
        if(direction === 'vertical'){   
             for(let i = 0; i < Ycells.length; i++){
                 if(Ycells[i].className === 'playerCell boat'){
@@ -150,12 +173,8 @@ playerCells.forEach(cell => {
                     cell.classList.add('boat')
                     cell.setAttribute('style', 'background-color:#36454F')
                 })
-                player.createBoat(Ypositions[0], array[0], 'horizontal')
-                Xcells = []
-                Ycells = []
-                Ypositions = []
-                Xpositions = []
-                array.shift()
+                player.createBoat(Ypositions[0], array[0], 'vertical')
+                array.shift()         
                 return
             }else if(direction === 'horizontal'){
                 console.log(Xcells.length)
@@ -170,12 +189,8 @@ playerCells.forEach(cell => {
                     cell.classList.add('boat')
                     cell.setAttribute('style', 'background-color:#36454F')
                 })
-                player.createBoat(Ypositions[0], array[0], 'vertical')
-                Xcells = []
-                Ycells = []
-                Ypositions = []
-                Xpositions = []
-                array.shift()
+                player.createBoat(Xpositions[0], array[0], 'horizontal')           
+                array.shift()      
                 return
             
         }
@@ -185,8 +200,8 @@ playerCells.forEach(cell => {
           
  
  
-const menuBar = document.querySelector('.menuBar')
-const start:any = document.querySelector('.startBtn')
+
+
 start.addEventListener('click', () => {
     menuBar?.removeChild(start)
     const compCells = document.querySelectorAll('.compCell')
@@ -212,42 +227,42 @@ compCells.forEach((cell) =>{
 })
 })
 /* cell.setAttribute('style', 'background-color:#36454F') */
-function placeBoats(cell:any, positions:any[], position:any){
+function placeBoats(cell:any, positions:any[], position:any, length:number){
 
     let count = 0
     let sub = 1
     let bool = false   
     if(direction === 'horizontal') {
         if(position %10 === 9){
-            return false
-            while(count != array[0]){
+           
+            while(count != length){
                 if(player.board()[position - count ] != ''){
                   return false
                 }
                 count++
             }
             count = 0
-            while(count != array[0]){
+            while(count != length){
                 positions.push(position-count)
                 count++
             }
             return true
         }
         else if(position %10 === 0){
-            while(count != array[0]){
+            while(count != length){
                 if(player.board()[position+count] != ''){
                     return false
                 }
                 count++
             }
             count = 0
-            while(count != array[0]){
+            while(count != length){
                 positions.push(position+count)
                 count++
             }
             return true
         }else{
-            while(count != array[0]){
+            while(count != length){
                 if(position+count %10 === 0){
                     
                     return false
@@ -269,7 +284,7 @@ function placeBoats(cell:any, positions:any[], position:any){
             count = 0
             sub = 1
             bool = false
-            while(count != array[0]){
+            while(count != length){
                 if((position+count) % 10 === 0){
                     bool = true
                 }
@@ -290,7 +305,7 @@ function placeBoats(cell:any, positions:any[], position:any){
         sub = 1
         bool = false
         if(position >= 90 && position <= 99){
-            while(count != array[0]){
+            while(count != length){
                 if(player.board()[position-width] != ''){
                     return false
                 }
@@ -300,7 +315,7 @@ function placeBoats(cell:any, positions:any[], position:any){
             width = 0
             count = 0
             while(count!= length){
-                positions.push(position+width)
+                positions.push(position-width)
                 width+=10
                 count++
             }
@@ -309,7 +324,7 @@ function placeBoats(cell:any, positions:any[], position:any){
         else if(position <= 9){
             width = 0
             count = 0
-            while(count != array[0]){
+            while(count != length){
                 if(player.board()[position+width] != ''){
                     return false
                 }
@@ -318,14 +333,14 @@ function placeBoats(cell:any, positions:any[], position:any){
             }
             width = 0
             count = 0
-            while(count != array[0]){
+            while(count != length){
                 positions.push(position+width)
                 width+=10
                 count++
             }
             return true
         } else if(position >= 10 && position <= 89){
-          while(count != array[0]){
+          while(count != length){
             if(position+width>= 100){
                 bool = true
             }
@@ -344,7 +359,7 @@ function placeBoats(cell:any, positions:any[], position:any){
         sub = 10
         width = 0
         bool = false
-        while(count != array[0]){
+        while(count != length){
             if(position+width >=100){
                 bool = true
             }
