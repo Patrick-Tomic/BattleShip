@@ -38,7 +38,7 @@ export default class User {
         }   
     }
     recieveAttack(position:number, cell:any, computer:User, player:User) {
-        
+        const reset:any= document.getElementById('reset')
         const title:any = document.querySelector('.title')
         if(computer.board()[position] === 'M' ||computer.board()[position] === 'H'){
             return
@@ -77,20 +77,29 @@ export default class User {
         }
     }
     randomAttack(player:User, computer:User):any{
-  
+        const reset:any= document.getElementById('reset')
         const title:any = document.querySelector('.title')
         if(player.shipsSunk() === false) {
 
             title.innerHTML = computer.name +' wins'
-           
+            reset.setAttribute('style', 'display:block')
             return 
         } 
          if( computer.shipsSunk() === false) {
             title.innerHTML = player.name +' wins'
-         
+            reset.setAttribute('style', 'display:block')
            return
         }
         console.log(this.chances)
+        if(!this.chances.length){
+            this.area = null
+                        this.vertical = false
+                        this.horizontal = false
+                        this.opposite = false
+                        this.direction = null
+                        this.chances = ['left', 'right','up', 'down']
+                        this.marker = 0
+        }
         let position = 0
         if(this.opposite === false){
              if(this.horizontal === true){
@@ -108,6 +117,12 @@ export default class User {
                 } else{
                 position = this.area +1}
             }
+            if(player.board()[position] === 'M' || player.board()[position] === 'H'){
+                this.direction = null
+                this.opposite = false
+                this.horizontal = false
+                this.area = this.marker
+            }
         }else if(this.vertical === true){
             if(this.direction === 'up'){
                
@@ -121,6 +136,12 @@ export default class User {
                     position = this.area -10
                 }else{
                 position = this.area +10}
+            }
+            if(player.board()[position] === 'M' || player.board()[position] === 'H'){
+                this.direction = null
+                this.opposite = false
+                this.vertical = false
+                this.area = this.marker
             }
         }else if(this.area != null) {
             if(this.chances[0] === 'left'){
@@ -257,12 +278,12 @@ export default class User {
   
      if(player.shipsSunk() === false) {
         console.log(computer.name +' wins')
-       
+        reset.setAttribute('style', 'display:block')
         return 
     } 
      if( computer.shipsSunk() === false) {
         console.log(player.name +' wins')
-     
+        reset.setAttribute('style', 'display:block')
        return  
     } 
         

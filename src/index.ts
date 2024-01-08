@@ -178,6 +178,11 @@ playerCells.forEach(cell => {
                     cell.classList.add('boat')
                     cell.setAttribute('style', 'background-color:#36454F')
                 })
+                if(  player.createBoat(Ypositions[0], array[0], 'vertical') === false){
+                    alert('Tile unavailable')
+                
+                    return
+                }  
                 player.createBoat(Ypositions[0], array[0], 'vertical')
                 array.shift()         
                 return
@@ -194,7 +199,13 @@ playerCells.forEach(cell => {
                     cell.classList.add('boat')
                     cell.setAttribute('style', 'background-color:#36454F')
                 })
-                player.createBoat(Xpositions[0], array[0], 'horizontal')           
+                if(player.createBoat(Xpositions[0], array[0], 'horizontal') === false){
+                    alert('Tile unavailable')
+                     
+                    return
+                }  
+                player.createBoat(Xpositions[0], array[0], 'horizontal')  
+                      
                 array.shift()      
                 return
             
@@ -204,8 +215,10 @@ playerCells.forEach(cell => {
  
         
  
- 
-
+ const reset:any= document.getElementById('reset')
+reset.addEventListener('click', () => {
+    window.location.reload()
+})
 
 start.addEventListener('click', () => {
     const ships = player.ships()
@@ -221,12 +234,12 @@ compCells.forEach((cell) =>{
     cell.addEventListener('click',() => {
         if(player.flag === false) {
             console.log(computer.name +' wins')
-           
+         
             return 
         } 
          if(computer.flag === false) {
             console.log(player.name +' wins')
-         
+            
            return
         }
         title.innerHTML = ''
@@ -236,12 +249,12 @@ compCells.forEach((cell) =>{
         if(player.shipsSunk() === false) {
 
             title.innerHTML = computer.name +' wins'
-           
+            reset.setAttribute('style', 'display:block')
             return 
         } 
          if( computer.shipsSunk() === false) {
             title.innerHTML = player.name +' wins'
-         
+            reset.setAttribute('style', 'display:block')
            return
         }
     })
