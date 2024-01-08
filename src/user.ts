@@ -90,7 +90,7 @@ export default class User {
          
            return
         }
-        console.log(this.chances[0])
+        console.log(this.chances)
         let position = 0
         if(this.opposite === false){
              if(this.horizontal === true){
@@ -125,29 +125,38 @@ export default class User {
         }else if(this.area != null) {
             if(this.chances[0] === 'left'){
                 if(this.area %10 ===0){
-                    position = this.area+1
+                   this.chances.shift()
+                   return this.randomAttack(player,computer)
                 }else{
                 position = this.area-1
                 }
             }else if(this.chances[0] === 'up'){
                 if(this.area >= 0 && this.area <= 9){
-                    position = this.area +10
+                    this.chances.shift()
+                   return this.randomAttack(player,computer)
                 }else{
                 position = this.area-10}
             }else if(this.chances[0] === 'right'){
                 if(this.area %10 === 9){
-                    position = this.area-1
-                } else{
-                position = this.area +1}
+                this.chances.shift()
+                return this.randomAttack(player,computer)
+                }
+                position = this.area +1
             } else if(this.chances[0] ==='down'){
-                if(this.area >= 90 && this.area <= 99){
-                    position = this.area -10
-                }else{
-                position = this.area +10}
+                 if(this.area >= 90 && this.area <= 99){
+                    this.chances.shift()
+                    return this.randomAttack(player,computer)
+                } else{
+                position = this.area +10
             }
         }
+        if(player.board()[position] === 'M' || player.board()[position] === 'H'){
+            this.chances.shift()
+            return this.randomAttack(player,computer)
+        }
+        }
      else{
-        position = Math.floor((Math.random() * 99) + 1)    
+        position = Math.floor((Math.random() * 100))    
      
    } }else if(this.opposite === true){
     if(this.horizontal === true){
@@ -174,16 +183,19 @@ export default class User {
             this.opposite = true
             return this.randomAttack(player,computer)
         } else if(this.horizontal === false || this.vertical === false){
-            this.chances.shift()
+            
             return this.randomAttack(player, computer)
         }
+      return this.randomAttack(player,computer)
        } else {
+        console.log(position)
         while(player.ships().length != count) {
             const ship = player.ships()[count]
             const length = ship.positions.length
             for(let i = 0; i < length; i++){
                 if(ship.positions[i] === position) {
                     console.log('hit!')
+                    player.board()[position] = 'H'  
                     cell.setAttribute('style', 'background-color:#800020;')
                     ship.hit()
                     ship.isSunk(computer)
@@ -193,11 +205,12 @@ export default class User {
                         this.horizontal = false
                         this.opposite = false
                         this.direction = null
-                        this.chances = ['left', 'up', 'right', 'down']
+                        this.chances = ['left', 'right','up', 'down']
                         this.marker = 0
+                       
                         return
                     }
-                    player.board()[position] = 'H'       
+                  
                 }
             }
             if(player.board()[position] === 'H') {
@@ -273,7 +286,7 @@ export default class User {
         
             const boats = this.ships()
             while( boats.length) {
-                if (this.ships()[0].Sunk == false) {
+                if (boats[0].Sunk == false) {
                        
                     return 
                 }
@@ -287,4 +300,3 @@ export default class User {
     
 
 const computer = new User('Computer')
- 

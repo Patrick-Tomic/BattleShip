@@ -50,8 +50,8 @@ main{
         display: flex;
         justify-content: center;
         width: 30vw;
-        .startBtn{
-            display: none;
+        button{
+           
             font-family: 'Anton', system-ui;
             cursor: pointer;;
             width: 10vw;
@@ -60,11 +60,15 @@ main{
             background-color: #B2BEB5;
             border: none;
         }
-        .startBtn:hover{
+        .startBtn{
+         display: none;
+         }
+        button:hover{
             color:navy;
         }
     }
-    .gridContainer{
+    .gridContainer{ 
+       
         display: flex;
         justify-content: space-around;
         .computer{

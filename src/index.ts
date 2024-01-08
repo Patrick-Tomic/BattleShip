@@ -5,7 +5,7 @@ import User from './user'
 const player = new User('Player')
 const computer = new User('Computer')
     
-  
+  console.log(computer.board())
 /*  player.createBoat(56,5,'horizontal')
  player.createBoat(71,4,'vertical')
  player.createBoat(33,2,'horizontal')
@@ -163,6 +163,10 @@ playerCells.forEach(cell => {
         if(!array.length){
             return
         }
+      if(cell.className === 'playerCell boat'){
+        alert('Cell taken')
+        return
+      }
        if(direction === 'vertical'){   
             for(let i = 0; i < Ycells.length; i++){
                 if(Ycells[i].className === 'playerCell boat'){
@@ -215,7 +219,6 @@ start.addEventListener('click', () => {
 let position:any 
 compCells.forEach((cell) =>{        
     cell.addEventListener('click',() => {
-        title.innerHTML = ''
         if(player.flag === false) {
             console.log(computer.name +' wins')
            
@@ -226,8 +229,21 @@ compCells.forEach((cell) =>{
          
            return
         }
+        title.innerHTML = ''
+       
         position = parseInt(cell.id)
         computer.recieveAttack(position, cell, computer, player)
+        if(player.shipsSunk() === false) {
+
+            title.innerHTML = computer.name +' wins'
+           
+            return 
+        } 
+         if( computer.shipsSunk() === false) {
+            title.innerHTML = player.name +' wins'
+         
+           return
+        }
     })
 })
 })
