@@ -1,10 +1,16 @@
 import  './style.scss'
 import User from './user'
-
-
+const main = document.querySelector('main')
+const body = document.querySelector('body')
+const instructions = document.querySelector('.instruction')
 const player = new User('Player')
 const computer = new User('Computer')
-    
+    const close = document.querySelector('.close')
+    close?.addEventListener('click', () => {
+        body?.setAttribute('style','background-color:white')
+        main?.setAttribute('style', 'opacity:1')
+        instructions?.setAttribute('style', 'display:none')
+    })
   console.log(computer.board())
 /*  player.createBoat(56,5,'horizontal')
  player.createBoat(71,4,'vertical')
